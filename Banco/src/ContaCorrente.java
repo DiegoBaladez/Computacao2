@@ -137,21 +137,21 @@ public class ContaCorrente {
         return this.numero;
     }
 
-    public void efetuarTransferencia(ContaCorrente contaEnvia, ContaCorrente contaRecebe, float valorTranserencia) {
+    public void efetuarTransferencia(ContaCorrente contaRecebe, float valorTranserencia) {
         //Está recebendo dois parametros (ContaCorrente). Substituir pelo .this.
         if(valorTranserencia <= 0 ){
             return; // ToDo Throw exception
         }
-        if(contaEnvia.saldoEmReais < valorTranserencia ){
+        if(this.saldoEmReais < valorTranserencia ){
             return; // ToDo Throw exception
         }
-        contaEnvia.saldoEmReais -= valorTranserencia;
+        this.saldoEmReais -= valorTranserencia;
         contaRecebe.saldoEmReais += valorTranserencia;
 
         String mensagemDebito = "Foram debitados: " + valorTranserencia + " da sua conta via transferência";
         String mensagemCredito = "Foram creditados: " + valorTranserencia + "na sua conta via transferência";
 
-        contaEnvia.transacoes.add(mensagemDebito);
+        this.transacoes.add(mensagemDebito);
         quantidadeDeTransacoesDeTodasAsContas++;
 //        contaRecebe.transacoes.add(mensagemCredito);
 //        quantidadeDeTransacoesDeTodasAsContas++;

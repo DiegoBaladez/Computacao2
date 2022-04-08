@@ -173,7 +173,7 @@ public class ContaCorrenteTest {
     public void testarTransferenciaComFundos(){
 
 
-        contaDoJoao.efetuarTransferencia(contaDoJoao,contaDaMaria,3);
+        contaDoJoao.efetuarTransferencia(contaDaMaria,3);
 
         assertEquals("Maria deve receber 3 reais",
                 saldoInicial+3,
@@ -189,7 +189,7 @@ public class ContaCorrenteTest {
     @Test
     public void testarTransferenciaSemFundos(){
 
-        contaDoJoao.efetuarTransferencia(contaDoJoao, contaDaMaria, 1000000);
+        contaDoJoao.efetuarTransferencia(contaDaMaria, 1000000);
 
         assertEquals("Transferencias sem fundo não devem alterar o saldo",
                 saldoInicial,
