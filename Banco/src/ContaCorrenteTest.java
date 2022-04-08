@@ -219,19 +219,19 @@ public class ContaCorrenteTest {
                 98321546, contaDoDiego.getCpfDoCorrentista());
     }
 
-    @Test //TERMINAR ISSO DAQUI E VERIFICAR! SÓ ISO QUE FALTA! /OBSERVAR OQ O PROF FEZ
+    @Test
     public void testarGetCpfViaContaCorrente(){
         assertEquals("O cpf do João deve ser o mesmo que o valor retornado",
                 1256325,
-                joao.getCpf()
+                contaDoJoao.getCpfDoCorrentista()
         );
         assertEquals("O cpf da Maria deve ser o mesmo que o valor retornado",
                 65498712,
-                maria.getCpf()
+                contaDaMaria.getCpfDoCorrentista()
         );
         assertEquals("O cpf do Diego deve ser o mesmo que o valor retornado",
                 98321546,
-                diego.getCpf()
+                contaDoDiego.getCpfDoCorrentista()
         );
     }
 
