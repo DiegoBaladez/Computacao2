@@ -10,8 +10,8 @@ public class FracaoTest {
     public void testarEqualsParaNumeradoreEDenominadorIdenticos() {
         Fracao fracao01 = new Fracao(1, 2);
         Fracao fracao02 = new Fracao(1, 2);
-        assertTrue(fracao01.equals(fracao02));
         assertFalse(fracao01 == fracao02);
+        assertTrue(fracao01.equals(fracao02));
     }
 
     @Test
@@ -318,3 +318,9 @@ public class FracaoTest {
 
     }
 }
+
+/**
+ * Consertar o teste getFracaoIrredutivelQuandoJaEh irredutivel()
+ *
+ *
+ */

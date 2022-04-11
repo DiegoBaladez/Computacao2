@@ -17,42 +17,44 @@ import static org.junit.Assert.*;
  * o outro não irá rodar. Por isso, é melhor quebrar em vários testes!
  * <p>
  * Método Setup @Before - antes de cada teste, o programa roda o método setup!
+ *
+ * Mockar - mexida só para o teste -
  */
 
 /**
  * Lab02
- *
+ * <p>
  * 1)Crie um unit test para o método getQuantidadeDeTransacoesDeTodasAsContas()
- *   Dica: crie mais de uma ContaCorrente no seu teste de depois faça um Assert cha
- *   mando o método static ContaCorrente.getQuantidadeDeTransaçõesDeTodasAsContas()
- *   diretamente via nome da classe, uma vez que o método é static.
- *   -----------------------------------------------------------------------------------
- *
- *   2)Crie um construtor para a classe Correntista que receba CPF e nome.
- *-----------------------------------------------------------------------------------
- *   3)Crie um Getter e um Setter para o nome do correntista.
- *-----------------------------------------------------------------------------------
- *  4) faça com que o atributo CPF seja Final;
- *-----------------------------------------------------------------------------------
- *  5)Crie um teste para o método getCpfDoCorrentista. /////////////DUVIDAS////////////////
- *
- *  6)TDD - TestSaqueComFundos() e TestSaqueComSemFundos()
- *---------------------------------------------------------------------------------------
- *  7)TDD - implementar  efetuarTransferencia()
- *
- *  8)Faça com que maria e contaDaMaria sejam atributos da classe de teste, e
- *      inicializa-las no metodo setUp
- *-------------------------------------------------------------------------------------------
- *   9)TDD- implementar o método Transferencia() e fazer seus testes passarem.
- *-----------------------------------------------------------------------------------------------
+ * Dica: crie mais de uma ContaCorrente no seu teste de depois faça um Assert cha
+ * mando o método static ContaCorrente.getQuantidadeDeTransaçõesDeTodasAsContas()
+ * diretamente via nome da classe, uma vez que o método é static.
+ * -----------------------------------------------------------------------------------
+ * <p>
+ * 2)Crie um construtor para a classe Correntista que receba CPF e nome.
+ * -----------------------------------------------------------------------------------
+ * 3)Crie um Getter e um Setter para o nome do correntista.
+ * -----------------------------------------------------------------------------------
+ * 4) faça com que o atributo CPF seja Final;
+ * -----------------------------------------------------------------------------------
+ * 5)Crie um teste para o método getCpfDoCorrentista. /////////////DUVIDAS////////////////
+ * <p>
+ * 6)TDD - TestSaqueComFundos() e TestSaqueComSemFundos()
+ * ---------------------------------------------------------------------------------------
+ * 7)TDD - implementar  efetuarTransferencia()
+ * <p>
+ * 8)Faça com que maria e contaDaMaria sejam atributos da classe de teste, e
+ * inicializa-las no metodo setUp
+ * -------------------------------------------------------------------------------------------
+ * 9)TDD- implementar o método Transferencia() e fazer seus testes passarem.
+ * -----------------------------------------------------------------------------------------------
  * Extra: Testar se o extrato foi alterado no metodo TestReceberDepositoEmDinheiroParaValorZero()
- *          --Regra: o extrato não deve se alterar com depósitos zerados!
+ * --Regra: o extrato não deve se alterar com depósitos zerados!
  */
 public class ContaCorrenteTest {
 
     private float FLOAT_DELTA = 0.00001f;
 
-    private Correntista joao ;
+    private Correntista joao;
     private long cpfDoJoao = 1256325;
     private ContaCorrente contaDoJoao;
 
@@ -67,8 +69,8 @@ public class ContaCorrenteTest {
     @Before
     public void setUp() {
         joao = new Correntista(cpfDoJoao, "João");
-        maria = new Correntista(cpfDaMaria,"Maria");
-        diego = new Correntista(98321546,"Diego");
+        maria = new Correntista(cpfDaMaria, "Maria");
+        diego = new Correntista(98321546, "Diego");
 
         contaDoJoao = new ContaCorrente(1, joao);
         contaDaMaria = new ContaCorrente(2, maria);
@@ -113,12 +115,19 @@ public class ContaCorrenteTest {
 
     @Test
     public void TestReceberDepositoEmDinheiroParaValoresNegativos() {
+        String extratoAntes = contaDoJoao.getExtrato();
+
         contaDoJoao.receberDepositoEmDinheiro(-50);
         assertEquals("Depositos de valor negativo devem ser" +
                         "ignorados",
                 saldoInicial,
                 contaDoJoao.getSaldoEmReais(),
                 FLOAT_DELTA);
+
+        String extratoDepois = contaDoJoao.getExtrato();
+
+        assertEquals("Depósitos ignorados não devem contar no extrato"
+                , extratoAntes, extratoDepois);
     }
 
     @Test
@@ -148,46 +157,46 @@ public class ContaCorrenteTest {
     }
 
     @Test
-    public void TestSaqueComFundos(){
-        contaDoJoao.sacar(contaDoJoao, 4);
+    public void TestSaqueComFundos() {
+        contaDoJoao.sacar( 4);
         assertEquals(
                 "O valor sacado deve ser descontado do saldo da conta",
                 saldoInicial - 4,
                 contaDoJoao.getSaldoEmReais()
-                ,FLOAT_DELTA
+                , FLOAT_DELTA
         );
     }
 
     @Test
     public void TestSaqueComSemFundos() {
-        contaDoJoao.sacar(contaDoJoao,100000000);
+        contaDoJoao.sacar(100000000);
         assertEquals(
                 "Saques de valores maiores que o saldo, não devem ser permitidos",
                 saldoInicial,
                 contaDoJoao.getSaldoEmReais()
-                ,FLOAT_DELTA
+                , FLOAT_DELTA
         );
     }
 
     @Test
-    public void testarTransferenciaComFundos(){
+    public void testarTransferenciaComFundos() {
 
 
-        contaDoJoao.efetuarTransferencia(contaDaMaria,3);
+        contaDoJoao.efetuarTransferencia(contaDaMaria, 3);
 
         assertEquals("Maria deve receber 3 reais",
-                saldoInicial+3,
+                saldoInicial + 3,
                 contaDaMaria.getSaldoEmReais(),
                 FLOAT_DELTA);
 
         assertEquals("Joao deve ter 3 reais descontados",
-                saldoInicial-3,
+                saldoInicial - 3,
                 contaDoJoao.getSaldoEmReais(),
                 FLOAT_DELTA);
     }
 
     @Test
-    public void testarTransferenciaSemFundos(){
+    public void testarTransferenciaSemFundos() {
 
         contaDoJoao.efetuarTransferencia(contaDaMaria, 1000000);
 
@@ -203,7 +212,7 @@ public class ContaCorrenteTest {
     }
 
     @Test
-    public void testarGetCpfDoCorrentista(){
+    public void testarGetCpfDoCorrentista() {
         assertEquals("O cpf do João deve ser o mesmo que o valor retornado",
                 1256325, joao.getCpf());
         assertEquals("O cpf da Maria deve ser o mesmo que o valor retornado",
@@ -220,7 +229,7 @@ public class ContaCorrenteTest {
     }
 
     @Test
-    public void testarGetCpfViaContaCorrente(){
+    public void testarGetCpfViaContaCorrente() {
         assertEquals("O cpf do João deve ser o mesmo que o valor retornado",
                 1256325,
                 contaDoJoao.getCpfDoCorrentista()
@@ -233,6 +242,19 @@ public class ContaCorrenteTest {
                 98321546,
                 contaDoDiego.getCpfDoCorrentista()
         );
+    }
+
+    @Test
+    public void testarExtrato(){
+        String extratoEsperado = "Conta criada com o saldo de R$10,00\n";
+        contaDoJoao.getExtrato();
+        assertEquals(extratoEsperado, contaDoJoao.getExtrato());
+
+        contaDoJoao.sacar(3);
+        extratoEsperado = "Conta criada com o saldo de R$10,00\n" +
+                "Efetuado saque em dinheiro de: R$3.0\n";
+        assertEquals(extratoEsperado, contaDoJoao.getExtrato());
+
     }
 
 

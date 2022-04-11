@@ -51,7 +51,7 @@ import java.util.*;
  * ficam na região de memória da classe e são visiveis pelas todas instancias da classe.Se
  * forem public, serão visiveis inclusive por coisas fora da classe.
  * Ex: Math.sqrt() - A classe Math usa um método estático sqrt().
- *
+ * <p>
  * String.format() - Método da classe String que possibilita formatar o texto com máscaras (%). Cada
  * valor que preencherá uma máscara deverá estar separado por vírgulas.
  */
@@ -74,7 +74,7 @@ public class ContaCorrente {
         this.numero = numeroDaConta;
         this.saldoEmReais = SALDO_INICIAL_DA_CONTA;
         this.transacoes = new ArrayList<>();
-        this.transacoes.add("Conta criada com o saldo de " + this.saldoEmReais);
+        this.transacoes.add(String.format("Conta criada com o saldo de R$%.2f", this.saldoEmReais));
 
     }
 
@@ -129,32 +129,32 @@ public class ContaCorrente {
         return quantidadeDeTransacoesDeTodasAsContas;
     }
 
-    public long getCpfDoCorrentista(){
+    public long getCpfDoCorrentista() {
         return this.correntista.getCpf();
     }
 
-    public int getNumeroDaConta(){
+    public int getNumeroDaConta() {
         return this.numero;
     }
 
     public void efetuarTransferencia(ContaCorrente contaRecebe, float valorTranserencia) {
         //Está recebendo dois parametros (ContaCorrente). Substituir pelo .this.
-        if(valorTranserencia <= 0 ){
+        if (valorTranserencia <= 0) {
             return; // ToDo Throw exception
         }
-        if(this.saldoEmReais < valorTranserencia ){
+        if (this.saldoEmReais < valorTranserencia) {
             return; // ToDo Throw exception
         }
         this.saldoEmReais -= valorTranserencia;
         contaRecebe.saldoEmReais += valorTranserencia;
 
         String mensagemDebito = "Foram debitados: " + valorTranserencia + " da sua conta de numero" +
-                getNumeroDaConta() +"via transferência bancária";
+                getNumeroDaConta() + "via transferência bancária";
 
         this.registrarTransacao(mensagemDebito);
     }
 
-    public void sacar(ContaCorrente contaDoSaque, float valorSacado) {
+    public void sacar(float valorSacado) {
         if (valorSacado > this.saldoEmReais) {
             return; // ToDo Throw exception
         }
@@ -163,31 +163,25 @@ public class ContaCorrente {
         }
         this.saldoEmReais -= valorSacado;
 
-        String registroTransacao = "Efetuado saque em dinheiro: " + valorSacado;
+        String registroTransacao = "Efetuado saque em dinheiro de: R$" + valorSacado;
 
         this.registrarTransacao(registroTransacao);
     }
 
-    private void registrarTransacao(String mensagem){
+    private void registrarTransacao(String mensagem) {
+//        String dataAtual = obterDataAtualAsString();
         this.transacoes.add(mensagem);
         quantidadeDeTransacoesDeTodasAsContas++;
+
+
     }
+//    private String obterDataAtualAsString(){
+//        return String.format("%s",new Date());
+//    }
 
 
 }
 
 /**
  * Melhorias:
- *
- * Dica prof aula 28/07 34:04
- *
- *
- * Criar um método para evitar a repetição de código nos registros de cada transação
- * private registroTransação(String registro){}
- *
- * Consertar o método de efetuarTransferencia()
- *
- * Consertar o registro de transação.
- *
- *
  */

@@ -21,19 +21,21 @@
  * irá verificar se os objetos apontam para o mesmo endereço de memória.
  * <p>
  * Métodos Equals ---> As vezes precisamos implementar o método equals. O padrão é comparar o endereço de memória.
- *
+ * <p>
  * Ctrl + Shift ------> Para subir a linha
- *
+ * <p>
  * Overload de construtor -->> Posso fazer com que o
  * construtor em overload possa chamar o outro para,
  * assim, evitar de repetir código.
  * Na aula, o construtor é desviado em: 1:44:10
- *
+ * <p>
  * OBS: INT DIVIDIDO POR INT GERA UM INT NO JAVA!
  * PARA RESOLVER ISSO, UM DOS OPERANDOS PRECISA SER
  * FLOAT/DOUBLE
  */
 
+
+import java.util.Objects;
 
 /**
  * Retorna o numerador da fração
@@ -45,6 +47,7 @@ public class Fracao {
     private int numerador;
     private int denominador;
     private boolean sinal;
+    private Fracao minhaFracaoIrredutivel;
 
 
     /**
@@ -112,12 +115,12 @@ public class Fracao {
         }
 
 
-
         if (numerador * denominador < 0) {
             this.sinal = false;
         } else {
             this.sinal = true;
         }
+        this.minhaFracaoIrredutivel = null;
     }
 
     /**
@@ -153,6 +156,7 @@ public class Fracao {
 
     /**
      * Recebe uma fração
+     *
      * @return retorna o valor da divisão dela.
      */
     public double getValorNumerico() {
@@ -166,8 +170,23 @@ public class Fracao {
      * propria fracao(this) caso ela propria já seja irredutivel
      */
     public Fracao getFracaoIrredutivel() {
-        return null;
+        if (this.minhaFracaoIrredutivel == null) {
+            int mdc = AritimeticaBasica.calcularMaximoDivisorComum(this.numerador, this.denominador);
+            this.minhaFracaoIrredutivel = new Fracao(
+                    this.numerador / mdc, this.denominador / mdc,
+                    this.sinal);
+            if (mdc == 1) {
+                this.minhaFracaoIrredutivel = this;
+            } else {
+                this.minhaFracaoIrredutivel = new Fracao(
+                        this.numerador / mdc, this.denominador / mdc,
+                        this.sinal);
+            }
+        }
+
+        return this.minhaFracaoIrredutivel;
     }
+
 
     public Fracao somarFracao(Fracao outraFracao) {
         int novoDenomidador;
@@ -264,21 +283,21 @@ public class Fracao {
     }
 
     @Override
-    public boolean equals(Object obj) { //QUEBRADO
-        Fracao fracao = (Fracao) obj;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false; // se as classes forem dif
+        Fracao fracao = (Fracao) o;
 
-        if (numerador != fracao.numerador){
-            return false;
-        }
+        Fracao minhaFracaoIrredutivel = fracao.getFracaoIrredutivel();
+        Fracao outraFracaoIrredutivel = fracao.getFracaoIrredutivel();
 
-        if (denominador != fracao.denominador){
-            return false;
-        }
+        return minhaFracaoIrredutivel.numerador == outraFracaoIrredutivel.numerador &&
+                minhaFracaoIrredutivel.denominador == outraFracaoIrredutivel.denominador &&
+                this.sinal == fracao.sinal;
+    }
 
-        if (sinal != fracao.sinal){
-            return false;
-        }
-
-        return true;
+    @Override
+    public int hashCode() {
+        return Objects.hash(numerador, denominador, sinal);
     }
 }
