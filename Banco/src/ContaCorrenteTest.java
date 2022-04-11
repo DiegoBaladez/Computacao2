@@ -142,7 +142,7 @@ public class ContaCorrenteTest {
         int quantidadeDeTransacoes = ContaCorrente.getQuantidadeDeTransacoesDeTodasAsContas();
 
         assertEquals("Devem ser contabilizadas todas as transações feitas",
-                5,
+                4,
                 quantidadeDeTransacoes);
 
     }

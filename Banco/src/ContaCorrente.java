@@ -148,14 +148,10 @@ public class ContaCorrente {
         this.saldoEmReais -= valorTranserencia;
         contaRecebe.saldoEmReais += valorTranserencia;
 
-        String mensagemDebito = "Foram debitados: " + valorTranserencia + " da sua conta via transferência";
-        String mensagemCredito = "Foram creditados: " + valorTranserencia + "na sua conta via transferência";
+        String mensagemDebito = "Foram debitados: " + valorTranserencia + " da sua conta de numero" +
+                getNumeroDaConta() +"via transferência bancária";
 
-        this.transacoes.add(mensagemDebito);
-        quantidadeDeTransacoesDeTodasAsContas++;
-//        contaRecebe.transacoes.add(mensagemCredito);
-//        quantidadeDeTransacoesDeTodasAsContas++;
-        // problema está aqui. Estou gerando dois acrésimos no total de registros de transações.
+        this.registrarTransacao(mensagemDebito);
     }
 
     public void sacar(ContaCorrente contaDoSaque, float valorSacado) {
@@ -168,10 +164,13 @@ public class ContaCorrente {
         this.saldoEmReais -= valorSacado;
 
         String registroTransacao = "Efetuado saque em dinheiro: " + valorSacado;
-        this.transacoes.add(registroTransacao);
+
+        this.registrarTransacao(registroTransacao);
+    }
+
+    private void registrarTransacao(String mensagem){
+        this.transacoes.add(mensagem);
         quantidadeDeTransacoesDeTodasAsContas++;
-
-
     }
 
 
