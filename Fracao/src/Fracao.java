@@ -301,3 +301,4 @@ public class Fracao {
         return Objects.hash(numerador, denominador, sinal);
     }
 }
+
