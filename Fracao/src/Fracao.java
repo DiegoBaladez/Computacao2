@@ -160,7 +160,10 @@ public class Fracao {
      * @return retorna o valor da divisão dela.
      */
     public double getValorNumerico() {
-        return 0;
+        if(this.getSinal()){
+            return numerador / (double) denominador;
+        }
+        return numerador * -1 / (double) denominador;
     }
 
     /**
@@ -170,6 +173,12 @@ public class Fracao {
      * propria fracao(this) caso ela propria já seja irredutivel
      */
     public Fracao getFracaoIrredutivel() {
+        garantirInicializarFracaoIrredutivel();
+        return this.minhaFracaoIrredutivel;
+    }
+
+
+    private Fracao garantirInicializarFracaoIrredutivel() {
         if (this.minhaFracaoIrredutivel == null) {
             int mdc = AritimeticaBasica.calcularMaximoDivisorComum(this.numerador, this.denominador);
             this.minhaFracaoIrredutivel = new Fracao(
@@ -186,7 +195,6 @@ public class Fracao {
 
         return this.minhaFracaoIrredutivel;
     }
-
 
     public Fracao somarFracao(Fracao outraFracao) {
         int novoDenomidador;
@@ -253,11 +261,28 @@ public class Fracao {
         return fracaoMultiplicada;
     }
 
-    public Fracao multiplicar(int numeroInteiro) {
-        return null;
+    public Fracao multiplicacaoMelhorada(Fracao outra){
+        Fracao fracaoProduto = new Fracao(this.numerador * outra.getNumerador(),
+                this.denominador * outra.getDenominador(),
+                this.sinal == outra.getSinal());
+        fracaoProduto.simplificar();
+        return fracaoProduto;
     }
 
+    public Fracao multiplicar(int numeroInteiro) {
+        Fracao fracaoProduto = new Fracao(this.numerador * numeroInteiro,
+                this.denominador,
+                this.sinal == AritimeticaBasica.extrairSinal(numeroInteiro));
+        fracaoProduto.simplificar();
+        return fracaoProduto;
+    }
+
+
+
     public void simplificar() {
+        garantirInicializarFracaoIrredutivel();
+        this.numerador = this.minhaFracaoIrredutivel.getNumerador();
+        this.denominador = this.minhaFracaoIrredutivel.getDenominador();
 
     }
 
@@ -302,3 +327,6 @@ public class Fracao {
     }
 }
 
+/*
+ * fazer um overload de construtor depois
+ * */

@@ -8,4 +8,8 @@ public class AritimeticaBasica {
         }
         return y;
     }
+
+    public static boolean extrairSinal(int numero){
+        return numero >= 0;
+    }
 }

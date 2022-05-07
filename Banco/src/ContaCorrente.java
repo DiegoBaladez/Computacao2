@@ -57,15 +57,12 @@ import java.util.*;
  */
 public class ContaCorrente {
     private final int numero;
-
     private Correntista correntista;
-
     private float saldoEmReais;
-
     private ArrayList<String> transacoes;
-
+    private Gerente gerente;
+    private boolean isativa;
     public static final float SALDO_INICIAL_DA_CONTA = 10; //constante
-
     private static int quantidadeDeTransacoesDeTodasAsContas = 0;
 
     //Construtor - metodo que chamamos aos usarmos o new
@@ -75,7 +72,7 @@ public class ContaCorrente {
         this.saldoEmReais = SALDO_INICIAL_DA_CONTA;
         this.transacoes = new ArrayList<>();
         this.transacoes.add(String.format("Conta criada com o saldo de R$%.2f", this.saldoEmReais));
-
+        this.isativa = true;
     }
 
     public float getSaldoEmReais() {
@@ -179,7 +176,26 @@ public class ContaCorrente {
 //        return String.format("%s",new Date());
 //    }
 
+    public void encerrar(){
+        if(this.saldoEmReais < 0 ) {} //ToDo lançar exceção - Não deixa encerrar
 
+        this.isativa = false;
+    }
+
+    public boolean isIsativa(){
+        return this.isativa;
+    }
+
+    public Gerente getGerente() {
+        return gerente;
+    }
+
+    public void setGerente(Gerente gerente) {
+        if(this.gerente != null){
+            this.gerente.deixarDeGerenciarConta(this);
+        }
+        this.gerente = gerente;
+    }
 }
 
 /**

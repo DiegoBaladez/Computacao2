@@ -1,3 +1,7 @@
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Date;
+
 /**
  * Singleton - Técnica usada para fazer um construtor PRIVATE que cria uma única instância de uma classe
  * Ex: public static Correntista singleton = new Correntista();
@@ -14,27 +18,31 @@
  *
  */
 
-public class Correntista {
+public class Correntista extends PessoaFisica {
+    private Gerente gerente;
+    private static final int LIMITE_DEFAULT = 100;
+    private float limiteDoChequeEspecial;
+    private ArrayList<ContaCorrente> contasCorrentes;
+    private ArrayList<AplicacaoFinanceira> investimento;
 
-    private final long cpf;
-    private String nome;
-
-    public Correntista(long cpfDoCorrentista, String nomeDoCorrentista) {
-        this.cpf = cpfDoCorrentista;
-        this.nome = nomeDoCorrentista;
+    public Correntista(long cpf, String nome) {
+        super(cpf,nome);
+        contasCorrentes = new ArrayList<>();
+        investimento = new ArrayList<>();
+        this.limiteDoChequeEspecial = LIMITE_DEFAULT;
 
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public float getLimiteChegueEspecial(){
+        return this.limiteDoChequeEspecial;
     }
 
-    public String getNome() {
-        return this.nome;
+    public void setLimiteDoChequeEspecial(float limiteDoChequeEspecial){
+        this.limiteDoChequeEspecial = limiteDoChequeEspecial;
     }
 
-    public long getCpf() {
-        return this.cpf;
+    public float getTotalInvestido(){
+        return 0; // ToDo IMPLEMENT ME!!
     }
 
 }

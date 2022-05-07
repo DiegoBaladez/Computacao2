@@ -87,8 +87,6 @@ public class ContaCorrenteTest {
                 ContaCorrente.SALDO_INICIAL_DA_CONTA,
                 contaDoJoao.getSaldoEmReais(),
                 FLOAT_DELTA);
-
-
     }
 
     @Test
@@ -257,6 +255,47 @@ public class ContaCorrenteTest {
 
     }
 
+    @Test
+    public void testarEncerramentoDeContaPeloGerenteDaConta(){
+        Gerente gerenteDeContaCarlos = new Gerente("Carlos",999,20);
+
+        gerenteDeContaCarlos.encerrarConta(contaDoJoao);
+
+        assertTrue("contas nao pode ser encerradas por gerentes" +
+                "de contas que nao gerenciam aquela conta.",contaDoJoao.isIsativa());
+    }
+
+    @Test
+    public void testarEncerramentoDeContaPeloGerenteDaContaCorreto(){
+        Gerente gerenteDeContaCarlos = new Gerente("Carlos",999,20);
+        gerenteDeContaCarlos.gerenciarConta(contaDoJoao);
+        assertTrue(gerenteDeContaCarlos.ehGerenteDaConta(contaDoJoao));
+
+        gerenteDeContaCarlos.encerrarConta(contaDoJoao);
+        assertFalse(contaDoJoao.isIsativa());
+        assertFalse(gerenteDeContaCarlos.ehGerenteDaConta(contaDoJoao));
+
+        assertFalse("deve ficar inativa após ser encerrada",contaDoJoao.isIsativa());
+
+
+    }
+
+    @Test
+    public void testarEncerramentoDeContaPeloGerenteGeral(){
+        Gerente gerenteDeContaCarlos = new Gerente("Carlos",999,20);
+        GerenteGeral gerenteGeralMariza = new GerenteGeral("Mariza",123456,2);
+        gerenteDeContaCarlos.gerenciarConta(contaDoJoao);
+        assertTrue(gerenteDeContaCarlos.ehGerenteDaConta(contaDoJoao));
+
+        gerenteGeralMariza.encerrarConta(contaDoJoao);
+        assertFalse(contaDoJoao.isIsativa());
+        assertFalse(gerenteGeralMariza.ehGerenteDaConta(contaDoJoao));
+        assertFalse(gerenteDeContaCarlos.ehGerenteDaConta(contaDoJoao));
+
+        assertFalse(contaDoJoao.isIsativa());
+
+
+    }
 
 }
 

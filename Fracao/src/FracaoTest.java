@@ -248,6 +248,9 @@ public class FracaoTest {
         fracao = new Fracao(0,7);
         assertEquals("0", fracao.toString());
 
+        fracao = new Fracao(0,7,false);
+        assertEquals("0", fracao.toString());
+
 
     }
 
@@ -322,5 +325,7 @@ public class FracaoTest {
 /**
  * Consertar o teste getFracaoIrredutivelQuandoJaEh irredutivel()
  *
+ * --- EXTRAIR MÉTODO --- Quando for criar mais um teste para determinada função. Fazer um método privado que generalise o teste
+ * para, assim, testar várias possibilidades de uma vez -- Vide 1:11:30 do video para + informações
  *
  */
