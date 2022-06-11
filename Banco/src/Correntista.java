@@ -1,6 +1,4 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Singleton - Técnica usada para fazer um construtor PRIVATE que cria uma única instância de uma classe
@@ -19,11 +17,11 @@ import java.util.Date;
  */
 
 public class Correntista extends PessoaFisica {
-    private Gerente gerente;
     private static final int LIMITE_DEFAULT = 100;
+    private Gerente gerente;
     private float limiteDoChequeEspecial;
-    private ArrayList<ContaCorrente> contasCorrentes;
-    private ArrayList<AplicacaoFinanceira> investimento;
+    private ArrayList<Conta> contasCorrentes;
+    private ArrayList<ContaInvestimento> investimento;
 
     public Correntista(long cpf, String nome) {
         super(cpf,nome);
@@ -43,6 +41,21 @@ public class Correntista extends PessoaFisica {
 
     public float getTotalInvestido(){
         return 0; // ToDo IMPLEMENT ME!!
+    }
+
+    public boolean verificaSeTemConta()
+    {
+        return this.contasCorrentes.isEmpty();
+    }
+
+    public void adicionarConta(Conta conta)
+    {
+        contasCorrentes.add(conta);
+    }
+
+    public void adicionarContaInvestimento(ContaInvestimento contaInvestimento)
+    {
+        investimento.add(contaInvestimento);
     }
 
 }

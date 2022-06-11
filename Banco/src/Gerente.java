@@ -37,14 +37,14 @@ public class Gerente extends PessoaFisica {
 
     private final long numeroDaMatricula;
     private Date dataDeAdmissao;
-    private ArrayList<ContaCorrente> contasGerenciadas;
+    private ArrayList<Conta> contasGerenciadas;
     private Date dataDeNascimento;
 
     public Gerente(String nome, long cpf, long numeroDaMatricula){
         super(cpf,nome);
         this.numeroDaMatricula = numeroDaMatricula;
         this.contasGerenciadas = new ArrayList<>();
-        this.dataDeAdmissao = new Date(); //data corrente
+        this.dataDeAdmissao = new Date();
     }
 
     public long getNumeroDaMatricula() {
@@ -59,11 +59,11 @@ public class Gerente extends PessoaFisica {
         this.dataDeAdmissao = dataDeAdmissao;
     }
 
-    public ArrayList<ContaCorrente> getContasGerenciadas() {
+    public ArrayList<Conta> getContasGerenciadas() {
         return contasGerenciadas;
     }
 
-    public void setContasGerenciadas(ArrayList<ContaCorrente> contasGerenciadas) {
+    public void setContasGerenciadas(ArrayList<Conta> contasGerenciadas) {
         this.contasGerenciadas = contasGerenciadas;
     }
 
@@ -81,20 +81,20 @@ public class Gerente extends PessoaFisica {
                 getNome(), this.numeroDaMatricula);
     }
 
-    public void gerenciarConta(ContaCorrente conta){
+    public void gerenciarConta(Conta conta){
         this.contasGerenciadas.add(conta);
         conta.setGerente(this);
     }
 
-    public void deixarDeGerenciarConta(ContaCorrente conta){
+    public void deixarDeGerenciarConta(Conta conta){
         this.contasGerenciadas.remove(conta);
     }
 
-    public boolean ehGerenteDaConta(ContaCorrente conta){
+    public boolean ehGerenteDaConta(Conta conta){
         return this.contasGerenciadas.contains(conta);
     }
 
-    public void encerrarConta(ContaCorrente conta){
+    public void encerrarConta(Conta conta){
         if(!this.contasGerenciadas.contains(conta)){
             return; //ToDo lançar exceção
             //n vai encerrar

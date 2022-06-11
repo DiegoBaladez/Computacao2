@@ -50,20 +50,20 @@ import static org.junit.Assert.*;
  * Extra: Testar se o extrato foi alterado no metodo TestReceberDepositoEmDinheiroParaValorZero()
  * --Regra: o extrato não deve se alterar com depósitos zerados!
  */
-public class ContaCorrenteTest {
+public class ContaTest {
 
     private float FLOAT_DELTA = 0.00001f;
 
     private Correntista joao;
     private long cpfDoJoao = 1256325;
-    private ContaCorrente contaDoJoao;
+    private Conta contaDoJoao;
 
     private Correntista maria;
     private long cpfDaMaria = 65498712;
-    private ContaCorrente contaDaMaria;
+    private Conta contaDaMaria;
 
     private Correntista diego;
-    private ContaCorrente contaDoDiego;
+    private Conta contaDoDiego;
     private float saldoInicial;
 
     @Before
@@ -72,9 +72,9 @@ public class ContaCorrenteTest {
         maria = new Correntista(cpfDaMaria, "Maria");
         diego = new Correntista(98321546, "Diego");
 
-        contaDoJoao = new ContaCorrente(1, joao);
-        contaDaMaria = new ContaCorrente(2, maria);
-        contaDoDiego = new ContaCorrente(3, diego);
+        contaDoJoao = new Conta(1, joao);
+        contaDaMaria = new Conta(2, maria);
+        contaDoDiego = new Conta(3, diego);
 
         saldoInicial = contaDoJoao.getSaldoEmReais();
         saldoInicial = contaDaMaria.getSaldoEmReais();
@@ -84,7 +84,7 @@ public class ContaCorrenteTest {
     @Test
     public void testSaldoInicialDaConta() {
         assertEquals("Toda conta deve ser criada com R$10,00",
-                ContaCorrente.SALDO_INICIAL_DA_CONTA,
+                Conta.SALDO_INICIAL_DA_CONTA,
                 contaDoJoao.getSaldoEmReais(),
                 FLOAT_DELTA);
     }
@@ -146,7 +146,7 @@ public class ContaCorrenteTest {
         contaDoJoao.receberDepositoEmDinheiro(12);
         contaDaMaria.receberDepositoEmDinheiro(12);
         //esse int pode sair!
-        int quantidadeDeTransacoes = ContaCorrente.getQuantidadeDeTransacoesDeTodasAsContas();
+        int quantidadeDeTransacoes = Conta.getQuantidadeDeTransacoesDeTodasAsContas();
 
         assertEquals("Devem ser contabilizadas todas as transações feitas",
                 4,
@@ -256,7 +256,7 @@ public class ContaCorrenteTest {
     }
 
     @Test
-    public void testarEncerramentoDeContaPeloGerenteDaConta(){
+    public void testarEncerramentoDeContaPeloGerenteDaContaErrado(){
         Gerente gerenteDeContaCarlos = new Gerente("Carlos",999,20);
 
         gerenteDeContaCarlos.encerrarConta(contaDoJoao);

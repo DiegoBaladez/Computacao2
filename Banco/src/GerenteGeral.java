@@ -10,12 +10,14 @@ public class GerenteGeral extends Gerente {
 
     }
 
+    /**
+     *
+     * Customização do método encerrar conta desviando para o método da superclasse.
+     */
     @Override
-    public void encerrarConta(ContaCorrente conta){
+    public void encerrarConta(Conta conta){
         gerenciarConta(conta);
-
         super.encerrarConta(conta);
 
-        deixarDeGerenciarConta(conta);
     }
 }

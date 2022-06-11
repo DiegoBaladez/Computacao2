@@ -1,4 +1,4 @@
-import java.util.*;
+import java.util.ArrayList;
 
 /**
  * A classe é um modelo para um objeto. O objeto é a instância de uma classe.
@@ -55,8 +55,8 @@ import java.util.*;
  * String.format() - Método da classe String que possibilita formatar o texto com máscaras (%). Cada
  * valor que preencherá uma máscara deverá estar separado por vírgulas.
  */
-public class ContaCorrente {
-    private final int numero;
+public class Conta {
+    private int numero;
     private Correntista correntista;
     private float saldoEmReais;
     private ArrayList<String> transacoes;
@@ -65,15 +65,19 @@ public class ContaCorrente {
     public static final float SALDO_INICIAL_DA_CONTA = 10; //constante
     private static int quantidadeDeTransacoesDeTodasAsContas = 0;
 
-    //Construtor - metodo que chamamos aos usarmos o new
-    public ContaCorrente(int numeroDaConta, Correntista correntista) {
+
+    public Conta(int numeroDaConta, Correntista correntista) {
         this.correntista = correntista;
         this.numero = numeroDaConta;
         this.saldoEmReais = SALDO_INICIAL_DA_CONTA;
         this.transacoes = new ArrayList<>();
         this.transacoes.add(String.format("Conta criada com o saldo de R$%.2f", this.saldoEmReais));
         this.isativa = true;
+        correntista.adicionarConta(this);
     }
+
+    protected Conta (){}
+
 
     public float getSaldoEmReais() {
         return this.saldoEmReais;
@@ -134,7 +138,7 @@ public class ContaCorrente {
         return this.numero;
     }
 
-    public void efetuarTransferencia(ContaCorrente contaRecebe, float valorTranserencia) {
+    public void efetuarTransferencia(Conta contaRecebe, float valorTranserencia) {
         //Está recebendo dois parametros (ContaCorrente). Substituir pelo .this.
         if (valorTranserencia <= 0) {
             return; // ToDo Throw exception
@@ -176,13 +180,14 @@ public class ContaCorrente {
 //        return String.format("%s",new Date());
 //    }
 
-    public void encerrar(){
-        if(this.saldoEmReais < 0 ) {} //ToDo lançar exceção - Não deixa encerrar
+    public void encerrar() {
+        if (this.saldoEmReais < 0) {
+        } //ToDo lançar exceção - Não deixa encerrar
 
         this.isativa = false;
     }
 
-    public boolean isIsativa(){
+    public boolean isIsativa() {
         return this.isativa;
     }
 
@@ -191,11 +196,13 @@ public class ContaCorrente {
     }
 
     public void setGerente(Gerente gerente) {
-        if(this.gerente != null){
+        if (this.gerente != null) {
             this.gerente.deixarDeGerenciarConta(this);
         }
         this.gerente = gerente;
     }
+
+
 }
 
 /**
