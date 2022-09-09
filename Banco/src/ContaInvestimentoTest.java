@@ -33,7 +33,7 @@ public class ContaInvestimentoTest {
 
 
     }
-    // NÃO FUNCIONA COMO DEVERIA
+
     @Test(expected=RuntimeException.class)
     public void testarConstrutorComExceçaoOcorrendo()
     {

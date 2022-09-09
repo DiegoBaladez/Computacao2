@@ -10,14 +10,37 @@ public class GerenteGeral extends Gerente {
 
     }
 
-    /**
-     *
-     * Customização do método encerrar conta desviando para o método da superclasse.
-     */
+
     @Override
-    public void encerrarConta(Conta conta){
+    public void encerrarConta(Conta conta) throws ContaNaoGerenciadaException, SaldoInsuficienteException,
+            SenhaInvalidaException {
         gerenciarConta(conta);
         super.encerrarConta(conta);
 
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ *
+ * Customização do método encerrar conta desviando para o método da superclasse.
+ */

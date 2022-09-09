@@ -1,5 +1,254 @@
 import java.util.ArrayList;
 
+public  class Conta {
+    private int numero;
+
+    private Correntista correntista;
+
+    protected float saldoEmReais = 0;
+
+    private ArrayList<String> transacoes;
+
+    private Gerente gerente;
+
+    private boolean isativa;
+
+    public static final float SALDO_INICIAL_DA_CONTA = 10; //constante
+
+    private static int quantidadeDeTransacoesDeTodasAsContas = 0;
+
+    private int senha;
+
+    private int contSenhasInvalidasConsecutivas = 0;
+
+
+    public Conta(int numeroDaConta, Correntista correntista) {
+        this.correntista = correntista;
+        this.numero = numeroDaConta;
+        this.saldoEmReais = SALDO_INICIAL_DA_CONTA;
+        this.transacoes = new ArrayList<>();
+        this.transacoes.add(String.format("Conta criada com o saldo de R$%.2f", this.saldoEmReais));
+        this.isativa = true;
+
+        if(isContaCorrente()){
+            correntista.adicionarConta(this);
+        }
+
+
+    }
+
+    public int getSenha()
+    {
+        return this.senha;
+    }
+
+    public void setSenha(int senha){
+        if(senha > 9999999)
+        {
+            return; //TodO Lançar exceção
+        }
+
+        if(senha == this.senha)
+        {
+            return; //ToDo não pode repetir a senha
+        }
+        this.senha = senha;
+
+    }
+
+    protected boolean isContaCorrente(){
+        return true;
+    }
+
+    public float getSaldoEmReais() {
+        return this.saldoEmReais;
+    }
+
+    public void getSaldoEmReais(float novoSaldo) {
+        this.saldoEmReais = novoSaldo;
+    }
+
+    //    public List<String> getTransacoes(){
+//        return Collections.unmodifiableList(transacoes);
+//    }
+    public String getExtrato() {
+        String resultado = "";
+        for (int i = 0; i < this.transacoes.size(); i++) {
+            resultado += this.transacoes.get(i) + "\n";
+        }
+        return resultado;
+    }
+
+    public void receberDepositoEmDinheiro(float valor) {
+        if (valor <= 0) {
+
+            return;
+        }
+
+        this.saldoEmReais += valor;
+
+
+
+        String registroTransacao = "Recebido deposito em dinheiro: " + valor;
+
+        this.transacoes.add(registroTransacao);
+        quantidadeDeTransacoesDeTodasAsContas++;
+    }
+
+    public long getCpfDoCorrentista(Correntista correntista) {
+
+        return 0;
+        // ToDo IMPLEMENTE ME!!!
+    }
+
+    public Correntista getCorrentista(){
+        return this.correntista;
+    }
+
+    /**
+     * Retorna a quantidade total de transações do banco, ou seja, de todas as
+     * contas correntes que já foram criadas.
+     *
+     * @return o total de transações
+     */
+    public static int getQuantidadeDeTransacoesDeTodasAsContas() {
+        return quantidadeDeTransacoesDeTodasAsContas;
+    }
+
+    public long getCpfDoCorrentista() {
+        return this.correntista.getCpf();
+    }
+
+    public int getNumeroDaConta() {
+        return this.numero;
+    }
+
+    protected void efetuarTransferencia(Conta contaRecebe, float valorTranserencia) {
+
+        if (valorTranserencia <= 0) {
+            return; //
+        }
+        if (this.saldoEmReais < valorTranserencia) {
+            return; //
+        }
+        this.saldoEmReais -= valorTranserencia;
+        contaRecebe.saldoEmReais += valorTranserencia;
+
+        String mensagemDebito = "Foram debitados: " + valorTranserencia + " da sua conta de numero" +
+                getNumeroDaConta() + "via transferência bancária";
+
+        this.registrarTransacao(mensagemDebito);
+    }
+
+    /**
+     *
+     * O método precisa saber que ele pode lançar uma exceção. Logo, ao lado direito dos
+     * parametros, ficam todas as exceções que ele sabe lançar.
+     */
+    public void sacar(float valorSacado, int senha) throws SenhaInvalidaException, SaldoInsuficienteException
+            , ContaInativaException
+    {
+        if(senha != this.senha)
+        {
+            this.contSenhasInvalidasConsecutivas++;
+
+            if(this.contSenhasInvalidasConsecutivas == 5)
+            {
+                this.isativa = false; //bloqueia a conta
+            }
+            throw new SenhaInvalidaException(this.contSenhasInvalidasConsecutivas);
+
+        }
+        /**
+         * Cria uma exceção dentro do método.
+         * Como todos os objetos, posso colocar atributos e métodos
+         * Então eu coloco o valor faltante no atributo correspondente de exceção
+         * e lanço a exceção que eu criei dentro do método
+         *
+         */
+        if (valorSacado > this.saldoEmReais) {
+            SaldoInsuficienteException excecao = new SaldoInsuficienteException();
+            excecao.setSaldoFaltante(valorSacado - this.saldoEmReais);
+            throw excecao;
+        }
+        if (valorSacado <= 0) {
+            return;
+        }
+
+        if(!this.isativa)
+        {
+            throw new ContaInativaException();
+        }
+
+        this.saldoEmReais -= valorSacado;
+
+        String registroTransacao = "Efetuado saque em dinheiro de: R$" + valorSacado;
+
+        this.registrarTransacao(registroTransacao);
+    }
+
+    private void registrarTransacao(String mensagem) {
+//        String dataAtual = obterDataAtualAsString();
+        this.transacoes.add(mensagem);
+        quantidadeDeTransacoesDeTodasAsContas++;
+
+
+    }
+//    private String obterDataAtualAsString(){
+//        return String.format("%s",new Date());
+//    }
+
+    public void encerrar(Conta conta) {
+        if (this.saldoEmReais < 0) {
+
+        }
+
+        this.isativa = false;
+    }
+
+    public boolean isIsativa() {
+        return this.isativa;
+    }
+
+    public Gerente getGerente() {
+        return gerente;
+    }
+
+    public void setGerente(Gerente gerente) {
+        if (this.gerente != null) {
+            this.gerente.deixarDeGerenciarConta(this);
+        }
+        this.gerente = gerente;
+    }
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * A classe é um modelo para um objeto. O objeto é a instância de uma classe.
  * Cada isntância terá as seus próprios dados
@@ -54,157 +303,17 @@ import java.util.ArrayList;
  * <p>
  * String.format() - Método da classe String que possibilita formatar o texto com máscaras (%). Cada
  * valor que preencherá uma máscara deverá estar separado por vírgulas.
+ *
+ * Exceções - comunicar ao chamador do método que algo não funcionou como se esperava
+ * e qual é a razão disso. O chamador tem que ter ciência que tal exceção pode ser chamada
+ * O chamador do método que recebe uma exceção precisa trata-la ou passar a
+ * exceção para o chamador acima.
+ *
+ * Exceções são tratadas ou passadas para cima
+ * Toda exceção tem que ser tratada individualmente
  */
-public class Conta {
-    private int numero;
-    private Correntista correntista;
-    private float saldoEmReais;
-    private ArrayList<String> transacoes;
-    private Gerente gerente;
-    private boolean isativa;
-    public static final float SALDO_INICIAL_DA_CONTA = 10; //constante
-    private static int quantidadeDeTransacoesDeTodasAsContas = 0;
 
-
-    public Conta(int numeroDaConta, Correntista correntista) {
-        this.correntista = correntista;
-        this.numero = numeroDaConta;
-        this.saldoEmReais = SALDO_INICIAL_DA_CONTA;
-        this.transacoes = new ArrayList<>();
-        this.transacoes.add(String.format("Conta criada com o saldo de R$%.2f", this.saldoEmReais));
-        this.isativa = true;
-        correntista.adicionarConta(this);
-    }
-
-    protected Conta (){}
-
-
-    public float getSaldoEmReais() {
-        return this.saldoEmReais;
-    }
-
-    public void getSaldoEmReais(float novoSaldo) {
-        this.saldoEmReais = novoSaldo;
-    }
-
-    //    public List<String> getTransacoes(){
-//        return Collections.unmodifiableList(transacoes);
-//    }
-    public String getExtrato() {
-        String resultado = "";
-        for (int i = 0; i < this.transacoes.size(); i++) {
-            resultado += this.transacoes.get(i) + "\n";
-        }
-        return resultado;
-    }
-
-    public void receberDepositoEmDinheiro(float valor) {
-        if (valor <= 0) {
-
-            return;
-        }
-
-        this.saldoEmReais += valor;
-
-        //Date agora = new Date(); // data de agora formatada
-
-        String registroTransacao = "Recebido deposito em dinheiro: " + valor;
-
-        this.transacoes.add(registroTransacao);
-        quantidadeDeTransacoesDeTodasAsContas++;
-    }
-
-    public long getCpfDoCorrentista(Correntista correntista) {
-
-        return 0;
-        // ToDo IMPLEMENTE ME!!!
-    }
-
-    /**
-     * Retorna a quantidade total de transações do banco, ou seja, de todas as
-     * contas correntes que já foram criadas.
-     *
-     * @return o total de transações
-     */
-    public static int getQuantidadeDeTransacoesDeTodasAsContas() {
-        return quantidadeDeTransacoesDeTodasAsContas;
-    }
-
-    public long getCpfDoCorrentista() {
-        return this.correntista.getCpf();
-    }
-
-    public int getNumeroDaConta() {
-        return this.numero;
-    }
-
-    public void efetuarTransferencia(Conta contaRecebe, float valorTranserencia) {
-        //Está recebendo dois parametros (ContaCorrente). Substituir pelo .this.
-        if (valorTranserencia <= 0) {
-            return; // ToDo Throw exception
-        }
-        if (this.saldoEmReais < valorTranserencia) {
-            return; // ToDo Throw exception
-        }
-        this.saldoEmReais -= valorTranserencia;
-        contaRecebe.saldoEmReais += valorTranserencia;
-
-        String mensagemDebito = "Foram debitados: " + valorTranserencia + " da sua conta de numero" +
-                getNumeroDaConta() + "via transferência bancária";
-
-        this.registrarTransacao(mensagemDebito);
-    }
-
-    public void sacar(float valorSacado) {
-        if (valorSacado > this.saldoEmReais) {
-            return; // ToDo Throw exception
-        }
-        if (valorSacado <= 0) {
-            return;
-        }
-        this.saldoEmReais -= valorSacado;
-
-        String registroTransacao = "Efetuado saque em dinheiro de: R$" + valorSacado;
-
-        this.registrarTransacao(registroTransacao);
-    }
-
-    private void registrarTransacao(String mensagem) {
-//        String dataAtual = obterDataAtualAsString();
-        this.transacoes.add(mensagem);
-        quantidadeDeTransacoesDeTodasAsContas++;
-
-
-    }
-//    private String obterDataAtualAsString(){
-//        return String.format("%s",new Date());
-//    }
-
-    public void encerrar() {
-        if (this.saldoEmReais < 0) {
-        } //ToDo lançar exceção - Não deixa encerrar
-
-        this.isativa = false;
-    }
-
-    public boolean isIsativa() {
-        return this.isativa;
-    }
-
-    public Gerente getGerente() {
-        return gerente;
-    }
-
-    public void setGerente(Gerente gerente) {
-        if (this.gerente != null) {
-            this.gerente.deixarDeGerenciarConta(this);
-        }
-        this.gerente = gerente;
-    }
-
-
-}
 
 /**
- * Melhorias:
+ * Melhorias: tentar colocar um setter para a conta no arraylist de contas
  */

@@ -1,0 +1,38 @@
+ok 1) Modifique o nome da classe Conta para Conta,
+   e da classe ContaInvestimento para ContaInvestimento
+
+ok 2) Faça com que a classe ContaInvestimento herde da classe Conta
+
+ok 3) A classe ContaInvestimento deverá ter os seguintes atributos extras
+   (ou seja, atributos não-herdados da classe Conta):
+
+   - tipoInvestimento (String)
+   - taxaJuros (float)
+
+FAZER TESTES E IMPLEMENTAR
+ 4) A classe ContaInvestimento deverá ter os seguintes métodos extras:
+
+    - aplicarJuros()
+         este método deverá atualizar o saldo da conta,
+         de acordo com a taxa de juros armazenada
+         (ou seja, se a taxa de juros é de 2%, você multiplicará
+          por 1.02)
+
+    - resgatarTotal()
+         este método deverá zerar o saldo desta conta de investimento
+         e trasferi-lo integralmente para a conta corrente
+         do dono desta conta de investimento
+
+ok 5) O construtor de ContaInvestimento deverá receber 4 parâmetros:
+   int numeroDaConta,
+   Correntista correntista,
+   String tipoInvestimento,
+   float taxaJuros
+
+0k 6) No construtor de ContaInvestimento, verifique que o correntista
+   possui alguma conta corrente naquele banco. Se ele não possuir
+   conta corrente no banco (REGRA DE NEGÓCIO!), ele não poderá
+   ter uma conta de investimento. Nesse caso, o seu construtor
+   deveria lançar uma exceção.
+
+   throw new RuntimeException("Correntista sem conta corrente!");

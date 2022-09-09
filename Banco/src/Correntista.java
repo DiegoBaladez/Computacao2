@@ -40,7 +40,7 @@ public class Correntista extends PessoaFisica {
     }
 
     public float getTotalInvestido(){
-        return 0; // ToDo IMPLEMENT ME!!
+        return 0;
     }
 
     public boolean verificaSeTemConta()

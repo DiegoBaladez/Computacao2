@@ -3,53 +3,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * Testes são sempre públicos e void!
- * <p>
- * São métodos da biblioteca Junit para fazermos comparações.
- * -- AssertEquals("Regra de Negocio",NumeroEsperado,
- * NumeroObtido,VARIAÇÃO FLOAT){}
- * <p>
- * - OBSERVAÇÃO PARA QUANDO SE
- * COMPARAR DOIS FLOATS. USAR UM FLOAT_DELTA
- * <p>
- * -- Quando uso mais de um assert dentro do mesmo teste, se um quebrar antes,
- * o outro não irá rodar. Por isso, é melhor quebrar em vários testes!
- * <p>
- * Método Setup @Before - antes de cada teste, o programa roda o método setup!
- *
- * Mockar - mexida só para o teste -
- */
-
-/**
- * Lab02
- * <p>
- * 1)Crie um unit test para o método getQuantidadeDeTransacoesDeTodasAsContas()
- * Dica: crie mais de uma ContaCorrente no seu teste de depois faça um Assert cha
- * mando o método static ContaCorrente.getQuantidadeDeTransaçõesDeTodasAsContas()
- * diretamente via nome da classe, uma vez que o método é static.
- * -----------------------------------------------------------------------------------
- * <p>
- * 2)Crie um construtor para a classe Correntista que receba CPF e nome.
- * -----------------------------------------------------------------------------------
- * 3)Crie um Getter e um Setter para o nome do correntista.
- * -----------------------------------------------------------------------------------
- * 4) faça com que o atributo CPF seja Final;
- * -----------------------------------------------------------------------------------
- * 5)Crie um teste para o método getCpfDoCorrentista. /////////////DUVIDAS////////////////
- * <p>
- * 6)TDD - TestSaqueComFundos() e TestSaqueComSemFundos()
- * ---------------------------------------------------------------------------------------
- * 7)TDD - implementar  efetuarTransferencia()
- * <p>
- * 8)Faça com que maria e contaDaMaria sejam atributos da classe de teste, e
- * inicializa-las no metodo setUp
- * -------------------------------------------------------------------------------------------
- * 9)TDD- implementar o método Transferencia() e fazer seus testes passarem.
- * -----------------------------------------------------------------------------------------------
- * Extra: Testar se o extrato foi alterado no metodo TestReceberDepositoEmDinheiroParaValorZero()
- * --Regra: o extrato não deve se alterar com depósitos zerados!
- */
 public class ContaTest {
 
     private float FLOAT_DELTA = 0.00001f;
@@ -57,6 +10,7 @@ public class ContaTest {
     private Correntista joao;
     private long cpfDoJoao = 1256325;
     private Conta contaDoJoao;
+    private int senhaDoJoao = 123;
 
     private Correntista maria;
     private long cpfDaMaria = 65498712;
@@ -79,6 +33,8 @@ public class ContaTest {
         saldoInicial = contaDoJoao.getSaldoEmReais();
         saldoInicial = contaDaMaria.getSaldoEmReais();
         saldoInicial = contaDoDiego.getSaldoEmReais();
+
+        contaDoJoao.setSenha(senhaDoJoao);
     }
 
     @Test
@@ -89,17 +45,7 @@ public class ContaTest {
                 FLOAT_DELTA);
     }
 
-    @Test
-    public void testSaldoEmReais() {
-    }
 
-    @Test
-    public void testGetSaldoEmReais() {
-    }
-
-    @Test
-    public void testGetExtrato() {
-    }
 
     @Test
     public void TestReceberDepositoEmDinheiroParaValoresValidos() {
@@ -140,12 +86,12 @@ public class ContaTest {
 
     @Test
     public void testarTotalDeTransacoesEmTodasAsContas() {
-        //assertEquals(0 ,ContaCorrente.getQuantidadeDeTransacoesDeTodasAsContas());
+
 
         contaDoDiego.receberDepositoEmDinheiro(12);
         contaDoJoao.receberDepositoEmDinheiro(12);
         contaDaMaria.receberDepositoEmDinheiro(12);
-        //esse int pode sair!
+
         int quantidadeDeTransacoes = Conta.getQuantidadeDeTransacoesDeTodasAsContas();
 
         assertEquals("Devem ser contabilizadas todas as transações feitas",
@@ -155,8 +101,8 @@ public class ContaTest {
     }
 
     @Test
-    public void TestSaqueComFundos() {
-        contaDoJoao.sacar( 4);
+    public void TestSaqueComFundos() throws SaldoInsuficienteException, ContaInativaException, SenhaInvalidaException {
+        contaDoJoao.sacar(4, senhaDoJoao);
         assertEquals(
                 "O valor sacado deve ser descontado do saldo da conta",
                 saldoInicial - 4,
@@ -165,15 +111,32 @@ public class ContaTest {
         );
     }
 
+//    @Test
+//    public void TestSaqueComFundosComSenhaErrada() throws SaldoInsuficienteException, ContaInativaException {
+//        try {
+//            contaDoJoao.sacar(4, 5874885);
+//            fail("senhas invalidas devem disparar exceções"); //oldschool
+//        } catch (SenhaInvalidaException e)
+//        {
+//
+//        }
+//    }
+
+
     @Test
-    public void TestSaqueComSemFundos() {
-        contaDoJoao.sacar(100000000);
-        assertEquals(
-                "Saques de valores maiores que o saldo, não devem ser permitidos",
-                saldoInicial,
-                contaDoJoao.getSaldoEmReais()
-                , FLOAT_DELTA
-        );
+    public void TestSaqueSemFundos() throws ContaInativaException, SenhaInvalidaException {
+        try {
+            contaDoJoao.sacar(100000000, senhaDoJoao);
+        } catch (SaldoInsuficienteException e)
+        {
+            System.out.println("exceção tratada");
+        }
+//        assertEquals(
+//                "Saques de valores maiores que o saldo, não devem ser permitidos",
+//                saldoInicial,
+//                contaDoJoao.getSaldoEmReais()
+//                , FLOAT_DELTA
+//        );
     }
 
     @Test
@@ -243,12 +206,12 @@ public class ContaTest {
     }
 
     @Test
-    public void testarExtrato(){
+    public void testarExtrato() throws SenhaInvalidaException, SaldoInsuficienteException, ContaInativaException {
         String extratoEsperado = "Conta criada com o saldo de R$10,00\n";
         contaDoJoao.getExtrato();
         assertEquals(extratoEsperado, contaDoJoao.getExtrato());
 
-        contaDoJoao.sacar(3);
+        contaDoJoao.sacar(3,senhaDoJoao);
         extratoEsperado = "Conta criada com o saldo de R$10,00\n" +
                 "Efetuado saque em dinheiro de: R$3.0\n";
         assertEquals(extratoEsperado, contaDoJoao.getExtrato());
@@ -256,17 +219,23 @@ public class ContaTest {
     }
 
     @Test
-    public void testarEncerramentoDeContaPeloGerenteDaContaErrado(){
+    public void testarEncerramentoDeContaPeloGerenteDaContaErrado() throws
+            SenhaInvalidaException, SaldoInsuficienteException {
         Gerente gerenteDeContaCarlos = new Gerente("Carlos",999,20);
 
-        gerenteDeContaCarlos.encerrarConta(contaDoJoao);
-
-        assertTrue("contas nao pode ser encerradas por gerentes" +
-                "de contas que nao gerenciam aquela conta.",contaDoJoao.isIsativa());
+        try {
+            gerenteDeContaCarlos.encerrarConta(contaDoJoao);
+        }catch(ContaNaoGerenciadaException e)
+        {
+            System.out.printf("A exceção foi tratada");
+        }
+//        assertTrue("contas nao pode ser encerradas por gerentes" +
+//                "de contas que nao gerenciam aquela conta.",contaDoJoao.isIsativa());
     }
 
     @Test
-    public void testarEncerramentoDeContaPeloGerenteDaContaCorreto(){
+    public void testarEncerramentoDeContaPeloGerenteDaContaCorreto() throws ContaNaoGerenciadaException,
+            SenhaInvalidaException, SaldoInsuficienteException {
         Gerente gerenteDeContaCarlos = new Gerente("Carlos",999,20);
         gerenteDeContaCarlos.gerenciarConta(contaDoJoao);
         assertTrue(gerenteDeContaCarlos.ehGerenteDaConta(contaDoJoao));
@@ -281,7 +250,8 @@ public class ContaTest {
     }
 
     @Test
-    public void testarEncerramentoDeContaPeloGerenteGeral(){
+    public void testarEncerramentoDeContaPeloGerenteGeral() throws ContaNaoGerenciadaException,
+            SenhaInvalidaException, SaldoInsuficienteException {
         Gerente gerenteDeContaCarlos = new Gerente("Carlos",999,20);
         GerenteGeral gerenteGeralMariza = new GerenteGeral("Mariza",123456,2);
         gerenteDeContaCarlos.gerenciarConta(contaDoJoao);
@@ -299,7 +269,3 @@ public class ContaTest {
 
 }
 
-/**
- * Correções / Melhorias
- * 1) Setar os CPFS como uma variável long para facilitar a mudança
- */

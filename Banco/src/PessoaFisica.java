@@ -23,7 +23,7 @@ public class PessoaFisica {
 
     public void setNome(String nome) {
         if(nome.length() > 30){
-            return; //ToDo throw exception
+            return;
         }
         this.nome = nome;
     }
