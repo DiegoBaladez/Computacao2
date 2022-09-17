@@ -12,6 +12,7 @@ public class AritimeticaBasicaTest {
         assertEquals(1, AritimeticaBasica.calcularMaximoDivisorComum(50, 21));
         assertEquals(1, AritimeticaBasica.calcularMaximoDivisorComum(5, 7));
         assertEquals(1, AritimeticaBasica.calcularMaximoDivisorComum(5, 1));
+        assertEquals(1, AritimeticaBasica.calcularMaximoDivisorComum(5, 0));
 
     }
 }

@@ -24,7 +24,7 @@ public class testeRapidao {
         System.out.println("List: " + arr);
 
         // Getting element at index 2
-        int element = arr.get(4);
+        int element = arr.get(3);
 
         // Displaying element at specified index
         // on console inside list

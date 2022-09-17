@@ -304,13 +304,56 @@ public  class Conta {
  * String.format() - Método da classe String que possibilita formatar o texto com máscaras (%). Cada
  * valor que preencherá uma máscara deverá estar separado por vírgulas.
  *
- * Exceções - comunicar ao chamador do método que algo não funcionou como se esperava
+ *
+ * Criando uma excessão:
+ * 1) Escolha se será uma runtime ou checked
+ * 2) O método que irá chamar a exceção, precisara usar o Throws nomeDaExceçãoException
+ * 3) O nomeDaExceçãoException será uma classe que herdará da classe Exception
+ * 4) nomeDaExceçãoException é uma classe como qualquer outra. Posso ter atributos e métodos
+ * e lá onde irei começar a tratar a exceção.
+ * 5) Try e Catch - Quando o chamador usar o método com exceção, temos que usar o Try- Catch e
+ * coloca no Catch todas as exceções que podem ocorrer com aquele método. Assim eu consigo
+ * capturar a exceção e dar o seu tratamento devido.
+ *
+ *
+ * Exceções - comunicar ao chamador do método que algo não funcionou como se esperava (diferente)
  * e qual é a razão disso. O chamador tem que ter ciência que tal exceção pode ser chamada
  * O chamador do método que recebe uma exceção precisa trata-la ou passar a
  * exceção para o chamador acima.
  *
  * Exceções são tratadas ou passadas para cima
  * Toda exceção tem que ser tratada individualmente
+ *
+ * Não necessariamente precisam declr
+ *
+ * Existem 2 tipos de exceções:
+ * 1)Checked exceptions - são as exceções que herdam da classe Exception
+ *  --- As checked exceptions precisam ser declaradas na assinatura do método
+ * 2)Runtime exceptions - herdam da RuntimeException
+ *  --- As Runtime, não precisam ser declaradas na assinatura do método
+ *
+ *  Pq criar uma ou outra:
+ *
+ *  As checked eexceptions são exceções que vão acontecer(são do bem). O chamador do método precisa
+ *  estar preparado pra recebe-la!É uma exceção esperada! .Não é um bug do sistema. ex: login errado,
+ *  ou mandar uma impressora imprimir e não ter papel suficiente. Falhas na redes.
+ *  Essas checked dizem ao chamador que ele precisa se preprar para cada exceção que acontecer que sabemos
+ *  que vai acontecer! As exceções são pré vistas e VÃO ACONTECER!!! O sistema foi pensado para que elas ocorram
+ *
+ *  Pq nao quero declarar as runtimesExceptions:
+ *
+ *  Runtime Exceptions (Ex: NullPointException)
+ *  São exceções que ocorrem quando o código "quebra"
+ *  São exceções que NÃO deveriam acontecer. Se ocorrem, é pq existe um BUG.
+ *  O chamador do método PRECISA verificar as entradas antes mesmo do método ser chamado para
+ *  que não ocorram. São relacionadas com BUGS no código.
+ *
+ *  Exemplo: um método que espera receber um objeto não nulo e recebe um objeto nulo. Isso cria uma
+ *  NullPointerException!
+ *
+ *  Resumão:
+ *  1) Quando for lançar uma exceção, ela deve ser esperada ou é uma situação ao qual não deve acontecer jamais
+ *  2)
  */
 
 

@@ -1,3 +1,5 @@
+import Exceptions.PapelInsuficienteException;
+import Exceptions.TintaEsgotadaException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -45,7 +47,7 @@ public class GraficaTest {
 
 
     @Test
-    public void testarRevesamentoEntreAsImpressoras(){
+    public void testarRevesamentoEntreAsImpressoras() throws TintaEsgotadaException, PapelInsuficienteException {
         impressora1.carregarPapel(10000000);
         impressora2.carregarPapel(10000000);
         impressora3.carregarPapel(10000000);
@@ -71,8 +73,7 @@ public class GraficaTest {
 
     @Test
 
-    public void testarRemocaoImpressora()
-    {
+    public void testarRemocaoImpressora() throws TintaEsgotadaException, PapelInsuficienteException {
         grafica.removerImpressora(impressora2);
 
         impressora1.carregarPapel(20);
@@ -89,8 +90,7 @@ public class GraficaTest {
 
     }
     @Test
-    public void testarRevezamentoAposRemocaoImpressora()
-    {
+    public void testarRevezamentoAposRemocaoImpressora() throws TintaEsgotadaException, PapelInsuficienteException {
         grafica.removerImpressora(impressora2);
 
         impressora1.carregarPapel(200);

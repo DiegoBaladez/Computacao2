@@ -1,3 +1,6 @@
+import Exceptions.PapelInsuficienteException;
+import Exceptions.TintaEsgotadaException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -20,15 +23,29 @@ public class Grafica {
 
     public void imprimirDocumento(Documento documento) {
 
+        boolean ok = false;
 
-        if (this.indiceProximaImpressoraNoRevezamento >= impressoras.size()) {
-            this.indiceProximaImpressoraNoRevezamento = this.indiceProximaImpressoraNoRevezamento
-                    % impressoras.size();
+        while(!ok)
+        {
+            if (this.indiceProximaImpressoraNoRevezamento >= impressoras.size()) {
+                this.indiceProximaImpressoraNoRevezamento = this.indiceProximaImpressoraNoRevezamento
+                        % impressoras.size();
+            }
+            Impressora impressoraDaVez = this.impressoras.get(this.indiceProximaImpressoraNoRevezamento);
+
+            try {
+                impressoraDaVez.imprimirDocumento(documento);
+                ok = true;
+            } catch (PapelInsuficienteException e) {
+                impressoraDaVez.carregarPapel(500);
+            } catch (TintaEsgotadaException e) {
+                break;
+            }
+
+            this.indiceProximaImpressoraNoRevezamento++;
+
         }
-        Impressora impressoraDaVez = this.impressoras.get(this.indiceProximaImpressoraNoRevezamento);
 
-        impressoraDaVez.imprimirDocumento(documento);
-        this.indiceProximaImpressoraNoRevezamento++;
 
 
     }

@@ -45,8 +45,6 @@ public class ContaTest {
                 FLOAT_DELTA);
     }
 
-
-
     @Test
     public void TestReceberDepositoEmDinheiroParaValoresValidos() {
         contaDoJoao.receberDepositoEmDinheiro(50);
@@ -107,8 +105,7 @@ public class ContaTest {
                 "O valor sacado deve ser descontado do saldo da conta",
                 saldoInicial - 4,
                 contaDoJoao.getSaldoEmReais()
-                , FLOAT_DELTA
-        );
+                , FLOAT_DELTA);
     }
 
 //    @Test
@@ -125,9 +122,11 @@ public class ContaTest {
 
     @Test
     public void TestSaqueSemFundos() throws ContaInativaException, SenhaInvalidaException {
-        try {
+        try
+        {
             contaDoJoao.sacar(100000000, senhaDoJoao);
         } catch (SaldoInsuficienteException e)
+
         {
             System.out.println("exceção tratada");
         }

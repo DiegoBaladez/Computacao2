@@ -26,7 +26,8 @@ public class Jogador {
         this.historicoDePartidas = new ArrayList<>();
     }
 
-    public void setOnline(){
+    public void setOnline()
+    {
         this.isOnline = true;
     }
 

@@ -1,103 +1,111 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.*;
 
 public class JogoOnline {
 
-    //private ArrayList<Jogador> jogadoresCadastrados = new ArrayList<Jogador>();
+    private Random random;
+
     private HashMap<String, Jogador> jogadorByUsername;
 
     public JogoOnline()
     {
-        //this.jogadoresCadastrados = new ArrayList<>();
+        this.random = new Random();
         this.jogadorByUsername = new HashMap<>();
     }
     //Melhora o Cadastro do Jogador. Aqui eu passo um objeto Jogador.
     //O método deve CRIAR o objeto e não receber um
-    //ToDo cadastrarJogador deve Criar um objeto e não receber um.
 
-    public Jogador cadastrarJogador(String username, int senha) {
+
+    public Jogador cadastrarJogador(String username, int senha) throws JogadorCadastradoException {
+
         if(encontrarJogador(username) != null )
         {
-            return null;
+            throw new JogadorCadastradoException();
         }
 
         Jogador novoJogador = new Jogador(username, senha);
-        //novoJogador.setSenha(senha);
         this.jogadorByUsername.put(username, novoJogador);
+
+        return novoJogador;
     }
 
-    public Jogador encontrarJogador(String username) {
+    //se der ruim, trocar por public mas acho que é isso mesmo
+    public Jogador encontrarJogador(String username)
+    {
         return this.jogadorByUsername.get(username);
     }
-    //ToDo!!!!
-//    public Jogador econtrarJogador(String username)
-//    {
-//        return this.jogadorByUsername.get(username);
-//    }
-
 
     //ToDo Login e logout repetindo muito código. Substituir por um método que faça isso
-    public void login(String username, int senha) {
-        for (int i = 0; i < jogadoresCadastrados.size(); i++) {
-            if (jogadoresCadastrados.get(i).getUsername() == username &&
-                    jogadoresCadastrados.get(i).getSenha() == senha) {
-
-                if (jogadoresCadastrados.get(i).isOnline() == false) {
-
-                    jogadoresCadastrados.get(i).setOnline();
-                } else {
-                    System.out.println("Jogador já está online");
-                }
-
-
+    public void login(String username, int senha)
+    {
+        if(verificaSeJogadorEstaCadastrado(username))
+        {
+            if(encontrarJogador(username) != null && encontrarJogador(username).getSenha() == senha)
+            {
+                encontrarJogador(username).setOnline();
             }
         }
-
     }
 
-    public void logOut(String username, int senha) {
-        for (int i = 0; i < jogadoresCadastrados.size(); i++) {
-            if (jogadoresCadastrados.get(i).getUsername() == username &&
-                    jogadoresCadastrados.get(i).getSenha() == senha) {
-
-                if (jogadoresCadastrados.get(i).isOnline() == true) {
-
-                    jogadoresCadastrados.get(i).setOffline();
-                } else {
-                    System.out.println("Jogador já está offline");
-                }
-
-
-            }
+    private boolean verificaSeJogadorEstaCadastrado(String username)
+    {
+        return this.jogadorByUsername.containsKey(username);
+    }
+    //se ele é diferente de nulo e está jogando, então deve fazer o logout
+    public void logOut(Jogador jogador)
+    {
+        if(jogador != null)
+        {
+            jogador.setOffline();
         }
-
     }
     //ToDo criar um overload para criar a partida com os usernames
-    //ToDo Verificar se os jogadores são nulos!
+
     public Partida iniciarPartida(Jogador jogador01, Jogador jogador02) {
-        if (jogador01.isOnline() && jogador02.isOnline() &&
-                !jogador01.isJogando() && !jogador02.isJogando()) {
+        if(jogador01  != null && jogador02 != null)
+        {
+            if (jogador01.isOnline() && jogador02.isOnline() &&
+                    !jogador01.isJogando() && !jogador02.isJogando()) {
 
-            Partida novaPartida = new Partida(jogador01, jogador02);
+                Partida novaPartida = new Partida(jogador01, jogador02);
 
-            jogador01.adicionarPartida(novaPartida);
-            jogador02.adicionarPartida(novaPartida);
+                jogador01.adicionarPartida(novaPartida);
+                jogador02.adicionarPartida(novaPartida);
 
-            novaPartida.setResultado(Partida.PARTIDA_EM_ANDAMENTO);
+                novaPartida.setResultado(Partida.PARTIDA_EM_ANDAMENTO);
 
-            return novaPartida;
-
+                return novaPartida;
+            }
         }
 
-        return null;
+        return null; //lançar uma exceção
     }
 
-    //ToDo retirar os inteiros 0 e 2 e substitui-los por Variaveis!
-    //ToDo verificar primeiro se a partida está em andamento
+    public Partida iniciarPartida(String username1, String username2) {
+        if(jogadorByUsername.containsKey(username1) && jogadorByUsername.containsKey(username2))
+        {
+            if (jogadorByUsername.get(username1).isOnline() && jogadorByUsername.get(username2).isOnline() &&
+                    !jogadorByUsername.get(username1).isJogando() && !jogadorByUsername.get(username2).isJogando()) {
+
+                Partida novaPartida = new Partida(jogadorByUsername.get(username1), jogadorByUsername.get(username2));
+
+                jogadorByUsername.get(username1).adicionarPartida(novaPartida);
+                jogadorByUsername.get(username2).adicionarPartida(novaPartida);
+
+                novaPartida.setResultado(Partida.PARTIDA_EM_ANDAMENTO);
+
+                return novaPartida;
+            }
+        }
+
+        return null; //lançar uma exceção
+    }
+
+
+    //ToDo Não estou verificando se a partida está em andamento. Verificar!! E lançar exceção
     public void encerrarPartida(Partida partida, int resultado) {
+
         if (resultado < 0 || resultado > 2) {
-            return; // lançar excessão
+            throw new IllegalArgumentException("Resultado Inválido"); // lançar exceção
         }
 
         Jogador jogador01 = partida.getJogador01();
@@ -121,33 +129,53 @@ public class JogoOnline {
                 jogador02.adicionaPontuação(1);
                 break;
             default:
-                break;
+               break;
         }
     }
 
     //ToDo criar um método adicionarPartidaJogaada para setar a partida no historico e a pontuação
 
     //ToDo esse método deve ter como parâmetro um jogador solicitante que não deve ser retornado
-    public Jogador escolherAdversario(Jogador solicitante) {
-        int posicaoInicial = this.random.nextInt(this.jogadorByUsername.size());
+//    public void escolherAdversario() {
+//        Random numeroAleatorio = new Random();
+//        int posicaoInicial = numeroAleatorio.nextInt(this.jogadorByUsername.size());
+//
+//        int posicaoCorrente = posicaoInicial;
+//
+//        do{
+//            Jogador adversario = this.jogadores.get(posicaoCorrente);
+//            if(adversario.isOnline() &&
+//            !adversario.isJogando() &&
+//            !adversario.equals(this)){
+//                return adversario;
+//            }
+//            posicaoCorrente++;
+//            if(posicaoCorrente == this.jogadores.size)
+//        }
+//    }
 
-        int posicaoCorrente = posicaoInicial;
+    public Jogador escolherAdversario() {
 
-        do{
-            Jogador adversario = this.jogadores.get(posicaoCorrente);
-            if(adversario.isOnline() &&
-            !adversario.isJogando() &&
-            !adversario.equals(solicitante)){
-                return adversario;
+        Collection<Jogador> valuesSet = jogadorByUsername.values();
+
+        ArrayList<Jogador> arrayDosJogadores = new ArrayList<>(valuesSet);
+
+        Collections.shuffle(arrayDosJogadores);
+
+        for (Jogador jogador : arrayDosJogadores)
+        {
+            if(!jogador.isJogando() && jogador.isOnline())
+            {
+                return jogador;
             }
-            posicaoCorrente++;
-            if(posicaoCorrente == this.jogadores.size)
+
         }
+        return null;
     }
 }
 
 /**
- * HashMap: Mapeamento entre dois objetos. Sempre que acrecentamos algumas coisa no
+ * HashMap: Mapeamento entre dois objetos. Sempre que acrecentarmos alguma coisa no
  * mapa, informamos duas coisas: a chave(pode ser qualquer coisa) e o valor(qualquer
  * coisa que eu queira)
  * Ex: Loja virtual. Preços e produtos. chave -> Objeto produto e valor o preço do produto

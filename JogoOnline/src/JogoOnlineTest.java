@@ -8,36 +8,43 @@ public class JogoOnlineTest {
     Jogador jogador01;
     Jogador jogador02;
     JogoOnline jogoOnline;
+    int senhaPadrao = 123;
 
 
     @Before
-    public void setUp() {
-        jogador01 = new Jogador("Diego", 1234);
-        jogador02 = new Jogador("Thayná", 4321);
+    public void setUp() throws JogadorCadastradoException {
+        jogador01 = new Jogador("Diego", senhaPadrao);
+        jogador02 = new Jogador("Thayná", senhaPadrao);
+
         jogoOnline = new JogoOnline();
-        jogoOnline.cadastrarJogador(jogador01, "Diego", 1234);
+        jogoOnline.cadastrarJogador("Diego",senhaPadrao);
+
     }
 
-    @Test
-    public void testarCadastrarJogadorComJogadorCadastrado() {
+    @Test (expected = JogadorCadastradoException.class)
+    public void testarCadastrarJogadorComJogadorCadastrado() throws JogadorCadastradoException {
 
-        assertFalse(jogoOnline.cadastrarJogador(jogador01, "Diego", 1234));
-        assertTrue(jogoOnline.cadastrarJogador(jogador02, "Thayná", 4321));
+        jogoOnline.cadastrarJogador("Diego",senhaPadrao);
+        jogoOnline.cadastrarJogador("Thayná", senhaPadrao);
 
     }
 
     @Test
     public void testarLogin() {
-        jogoOnline.login("Diego", 1234);
 
-        assertTrue(jogador01.isOnline());
+        jogoOnline.login("Diego", senhaPadrao);
+        assertTrue(jogoOnline.encontrarJogador("Diego").isOnline());
+
     }
 
     @Test
     public void testarLogout() {
-        jogoOnline.login("Diego", 1234);
-        assertTrue(jogador01.isOnline());
-        jogoOnline.logOut("Diego", 1234);
+        jogoOnline.login("Diego", senhaPadrao);
+        assertTrue(jogoOnline.encontrarJogador("Diego").isOnline());
+
+        Jogador jogadorTeste = jogoOnline.encontrarJogador("Diego");
+
+        jogoOnline.logOut(jogadorTeste);
         assertFalse(jogador01.isOnline());
 
     }
@@ -58,50 +65,47 @@ public class JogoOnlineTest {
     }
 
     @Test
-    public void testarAcharUmJogadorAdversario() {
-        Jogador jogador04 = new Jogador("Jorge", 1234);
-        Jogador jogador05 = new Jogador("Mateus", 1234);
-        Jogador jogador06 = new Jogador("Carlos", 1234);
-        Jogador jogador07 = new Jogador("Mariana", 1234);
-        Jogador jogador08 = new Jogador("Stefany", 1234);
+    public void testarAcharUmJogadorAdversario() throws JogadorCadastradoException {
+        Jogador jogador04 = new Jogador("Jorge", senhaPadrao);
+        Jogador jogador05 = new Jogador("Mateus", senhaPadrao);
+        Jogador jogador06 = new Jogador("Carlos", senhaPadrao);
+        Jogador jogador07 = new Jogador("Mariana", senhaPadrao);
+        Jogador jogador08 = new Jogador("Stefany", senhaPadrao);
 
-        jogoOnline.cadastrarJogador(jogador04, "Jorge", 1234);
-        jogoOnline.cadastrarJogador(jogador05, "Mateus", 1234);
-        jogoOnline.cadastrarJogador(jogador06, "Carlos", 1234);
-        jogoOnline.cadastrarJogador(jogador07, "Mariana", 1234);
-        jogoOnline.cadastrarJogador(jogador08, "Stefany", 1234);
+        jogoOnline.cadastrarJogador("Jorge", senhaPadrao);
+        jogoOnline.cadastrarJogador("Mateus", senhaPadrao);
+        jogoOnline.cadastrarJogador("Carlos", senhaPadrao);
+        jogoOnline.cadastrarJogador("Mariana", senhaPadrao);
+        jogoOnline.cadastrarJogador("Stefany", senhaPadrao);
 
-        jogoOnline.login("Carlos", 1234);
-        jogoOnline.login("Stefany", 1234);
+        jogoOnline.login("Carlos", senhaPadrao);
+        jogoOnline.login("Stefany", senhaPadrao);
 
-        Jogador jogadorEsperado = jogoOnline.escolherAdversario();
+        Jogador jogadorAtual = jogoOnline.escolherAdversario();
 
-        assertEquals("Deve retornar o primeiro jogador a ser encontrado Online e Não jogando",
-                jogador06, jogadorEsperado);
+        assertTrue(jogadorAtual.isOnline());
+        assertFalse(jogadorAtual.isJogando());
 
-//        Jogador novoJogadorEsperado = jogoOnline.escolherAdversario();
-//
-//        assertEquals("Deve retornar o primeiro jogador a ser encontrado Online e Não jogando",
-//                jogador08, novoJogadorEsperado);
+
     }
 
 
     //ToDo está retornando o mesmo jogador!!
     @Test
-    public void testarAcharUmJogadorAdversarioRetornandoOMesmoJogador() {
-        Jogador jogador04 = new Jogador("Jorge", 1234);
-        Jogador jogador05 = new Jogador("Mateus", 1234);
-        Jogador jogador06 = new Jogador("Carlos", 1234);
-        Jogador jogador07 = new Jogador("Mariana", 1234);
-        Jogador jogador08 = new Jogador("Stefany", 1234);
+    public void testarAcharUmJogadorAdversarioRetornandoOMesmoJogador() throws JogadorCadastradoException {
+        Jogador jogador04 = new Jogador("Jorge", senhaPadrao);
+        Jogador jogador05 = new Jogador("Mateus", senhaPadrao);
+        Jogador jogador06 = new Jogador("Carlos", senhaPadrao);
+        Jogador jogador07 = new Jogador("Mariana", senhaPadrao);
+        Jogador jogador08 = new Jogador("Stefany", senhaPadrao);
 
-        jogoOnline.cadastrarJogador(jogador04, "Jorge", 1234);
-        jogoOnline.cadastrarJogador(jogador05, "Mateus", 1234);
-        jogoOnline.cadastrarJogador(jogador06, "Carlos", 1234);
-        jogoOnline.cadastrarJogador(jogador07, "Mariana", 1234);
-        jogoOnline.cadastrarJogador(jogador08, "Stefany", 1234);
+        jogoOnline.cadastrarJogador("Jorge", senhaPadrao);
+        jogoOnline.cadastrarJogador("Mateus", senhaPadrao);
+        jogoOnline.cadastrarJogador("Carlos", senhaPadrao);
+        jogoOnline.cadastrarJogador("Mariana", senhaPadrao);
+        jogoOnline.cadastrarJogador("Stefany", senhaPadrao);
 
-        jogoOnline.login("Carlos", 1234);
+        jogoOnline.login("Carlos", senhaPadrao);
 
 
         Jogador jogadorEsperado = jogoOnline.escolherAdversario();
@@ -117,20 +121,20 @@ public class JogoOnlineTest {
 
     //ToDo  testar quando não acha um jogador
     @Test
-    public void testarAcharUmJogadorAdversarioRetornandoNenhumJogador() {
-        Jogador jogador04 = new Jogador("Jorge", 1234);
-        Jogador jogador05 = new Jogador("Mateus", 1234);
-        Jogador jogador06 = new Jogador("Carlos", 1234);
-        Jogador jogador07 = new Jogador("Mariana", 1234);
-        Jogador jogador08 = new Jogador("Stefany", 1234);
+    public void testarAcharUmJogadorAdversarioRetornandoNenhumJogador() throws JogadorCadastradoException {
+        Jogador jogador04 = new Jogador("Jorge", senhaPadrao);
+        Jogador jogador05 = new Jogador("Mateus", senhaPadrao);
+        Jogador jogador06 = new Jogador("Carlos", senhaPadrao);
+        Jogador jogador07 = new Jogador("Mariana", senhaPadrao);
+        Jogador jogador08 = new Jogador("Stefany", senhaPadrao);
 
-        jogoOnline.cadastrarJogador(jogador04, "Jorge", 1234);
-        jogoOnline.cadastrarJogador(jogador05, "Mateus", 1234);
-        jogoOnline.cadastrarJogador(jogador06, "Carlos", 1234);
-        jogoOnline.cadastrarJogador(jogador07, "Mariana", 1234);
-        jogoOnline.cadastrarJogador(jogador08, "Stefany", 1234);
+        jogoOnline.cadastrarJogador("Jorge", senhaPadrao);
+        jogoOnline.cadastrarJogador("Mateus", senhaPadrao);
+        jogoOnline.cadastrarJogador("Carlos", senhaPadrao);
+        jogoOnline.cadastrarJogador("Mariana", senhaPadrao);
+        jogoOnline.cadastrarJogador("Stefany", senhaPadrao);
 
-        jogoOnline.login("Carlos", 1234);
+        jogoOnline.login("Carlos", senhaPadrao);
 
 
         Jogador jogadorEsperado = jogoOnline.escolherAdversario();
@@ -184,7 +188,7 @@ public class JogoOnlineTest {
         assertEquals(1000, jogador02.getPontuacaoAcumulada());
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testarTerminarPartidaComValorErrado() {
         JogoOnline jogoOnline = new JogoOnline();
 

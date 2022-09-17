@@ -43,7 +43,9 @@ public class Partida {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
+
         if (o == null || getClass() != o.getClass()) return false;
+
         Partida partida = (Partida) o;
         return Objects.equals(jogador01, partida.jogador01) && Objects.equals(jogador02, partida.jogador02);
     }

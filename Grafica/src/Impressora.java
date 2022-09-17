@@ -1,3 +1,6 @@
+import Exceptions.PapelInsuficienteException;
+import Exceptions.TintaEsgotadaException;
+
 public abstract class Impressora {
 
     private final long numeroDeSerie;
@@ -11,11 +14,17 @@ public abstract class Impressora {
         this.numeroDeSerie = numeroDeSerie;
     }
 
-    public boolean imprimirDocumento(Documento documento) {
+    /**
+     * Imprime um documento se possível
+     * @param documento o documento a ser impresso
+     * @throws PapelInsuficienteException se não houver papel suficente para a impressão do doc
+     * @throws TintaEsgotadaException se acabar a tinta!
+     */
+    public void imprimirDocumento(Documento documento) throws PapelInsuficienteException, TintaEsgotadaException {
 
         if(this.quantPapel < documento.getQuantidadeDePaginas() )
         {
-            return false;
+            throw new PapelInsuficienteException();
         }
 
         for (int i = 0; i < documento.getQuantidadeDePaginas(); i++)
@@ -27,7 +36,7 @@ public abstract class Impressora {
         }
 
         this.quantDocumentos += 1;
-        return true;
+
     }
 
     public void carregarPapel(int numeroDeFolhas)
@@ -46,7 +55,7 @@ public abstract class Impressora {
         return quantDocumentos;
     }
 
-    public abstract void executarImpressaoDaPagina(String pagina); //cada impressora irá imprimir mas imprimir do seu jeito
+    public abstract void executarImpressaoDaPagina (String pagina) throws TintaEsgotadaException; //cada impressora irá imprimir mas imprimir do seu jeito
 
     public long getNumeroDeSerie(){return this.numeroDeSerie;}
 }
@@ -56,4 +65,9 @@ public abstract class Impressora {
  * o suficiente para imprimir o documento inteiro.
  * <p>
  * 2º)
+ *
+ *
+ *
+ *  OBSERVAÇÃO: Métodos com @Override que lançam exceção, precisam sinalizar também
+ *  ao método de cima que ele pode lançar uma exceção!
  */
