@@ -34,31 +34,43 @@ public class JogoOnline {
         return this.jogadorByUsername.get(username);
     }
 
-    //ToDo Login e logout repetindo muito código. Substituir por um método que faça isso
-    public void login(String username, int senha)
+    public void login(String username, int senha) throws UsuarioNaoExistenteException, SenhaInvalidaException
     {
-        if(verificaSeJogadorEstaCadastrado(username))
+        if(!verificaSeJogadorEstaCadastrado(username))
         {
-            if(encontrarJogador(username) != null && encontrarJogador(username).getSenha() == senha)
-            {
-                encontrarJogador(username).setOnline();
-            }
+            throw new UsuarioNaoExistenteException();
         }
+
+        if(encontrarJogador(username).getSenha() != senha)
+        {
+            throw new SenhaInvalidaException();
+        }
+
+        if(encontrarJogador(username) != null)
+        {
+            encontrarJogador(username).setOnline();
+        }
+
+
+
     }
 
     private boolean verificaSeJogadorEstaCadastrado(String username)
     {
         return this.jogadorByUsername.containsKey(username);
     }
-    //se ele é diferente de nulo e está jogando, então deve fazer o logout
+
     public void logOut(Jogador jogador)
     {
+        if (!jogador.isOnline()){
+            throw new RuntimeException("Jogador já se encontra offline");
+        }
+
         if(jogador != null)
         {
             jogador.setOffline();
         }
     }
-    //ToDo criar um overload para criar a partida com os usernames
 
     public Partida iniciarPartida(Jogador jogador01, Jogador jogador02) {
         if(jogador01  != null && jogador02 != null)
@@ -77,7 +89,7 @@ public class JogoOnline {
             }
         }
 
-        return null; //lançar uma exceção
+        return null; //TODO lançar uma exceção
     }
 
     public Partida iniciarPartida(String username1, String username2) {
@@ -97,7 +109,7 @@ public class JogoOnline {
             }
         }
 
-        return null; //lançar uma exceção
+        return null; //TODO lançar uma exceção
     }
 
 

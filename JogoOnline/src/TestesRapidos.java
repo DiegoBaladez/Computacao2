@@ -1,5 +1,6 @@
 public class TestesRapidos {
-    public static void main(String[] args) throws JogadorCadastradoException {
+    public static void main(String[] args) throws JogadorCadastradoException, UsuarioNaoExistenteException,
+            SenhaInvalidaException {
 
         Jogador diego = new Jogador("Gagdau",123);
         JogoOnline partida1 = new JogoOnline();

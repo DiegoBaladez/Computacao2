@@ -1,17 +1,17 @@
-1) Modifique o metodo fazerLogin para que ele seja void (não mais retorne um boolean)
+1) Modifique o metodo fazerLogin para que ele seja void (não mais retorne um boolean) -- OK
 
 2) No método fazerLogin, se o username for desconhecido (jogador não cadastrado),
-  lance uma checked exception UsuarioInexistenteException
+  lance uma checked exception UsuarioInexistenteException -- OK
 
-3) No método fazerLogin, se a SENHA estiver incorreta,
+3) No método fazerLogin, se a SENHA estiver incorreta, -- OK
    lance uma checked exception SenhaInvalidaException
 
 4) No método fazerLogout,se o jogador não estiver online lance uma
    RuntimeException. O chamador não deveria pedir para fazer logout de alguém
-   que não está logged in (online).
+   que não está logged in (online). -- OK
 
 5) Modifique os unit tests existentes para capturar todas as checked exceptions
-   e relançá-las (basta adicionar à assinatura dos métodos de teste).
+   e relançá-las (basta adicionar à assinatura dos métodos de teste). -- OK
 
 6) Acrescente testes para verificar que checked exceptions que você criou
    nos exercícios acima estão sendo corretamente lançadas quando aquelas
