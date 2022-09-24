@@ -1,2 +1,4 @@
-package exception;public class EnderecoInvalidoException {
+package exception;
+
+public class EnderecoInvalidoException extends Exception{
 }

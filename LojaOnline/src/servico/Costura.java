@@ -1,2 +1,4 @@
-package servico;public class Costura {
+package servico;
+
+public class Costura {
 }

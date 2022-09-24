@@ -1,2 +1,7 @@
-package exception;public class UsuarioBanidoException {
+package exception;
+
+public class UsuarioBanidoException extends Exception{
+
+
+
 }

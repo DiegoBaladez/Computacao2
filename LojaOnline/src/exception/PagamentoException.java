@@ -1,2 +1,5 @@
-package exception;public class PagamentoException {
+package exception;
+
+public class PagamentoException extends Exception{
+
 }
