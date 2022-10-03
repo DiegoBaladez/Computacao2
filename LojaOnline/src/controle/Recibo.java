@@ -4,7 +4,7 @@ import produto.Produto;
 
 public class Recibo {
 
-    private final Produto produtoVendido;
+    private final Vendavel produtoVendido;
 
     private final int quantidadeVendida;
 
@@ -13,7 +13,7 @@ public class Recibo {
     private final float valorTotal;
 
 
-    public Recibo(Produto produtoVendido, int quantidadeVendida, Usuario comprador, float valorTotal) {
+    public Recibo(Vendavel produtoVendido, int quantidadeVendida, Usuario comprador, float valorTotal) {
         this.produtoVendido = produtoVendido;
         this.quantidadeVendida = quantidadeVendida;
         this.comprador = comprador;

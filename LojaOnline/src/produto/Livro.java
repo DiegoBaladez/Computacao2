@@ -1,8 +1,8 @@
 package produto;
 
-import java.awt.*;
+import controle.Dimensoes;
 
-public class Livro extends Produto{
+public class Livro extends Produto {
 
     private int numeroDePaginas;
 
@@ -73,5 +73,10 @@ public class Livro extends Produto{
     @Override
     protected float getPrecoDefault() {
         return PRECO_DEFAULT_POR_PAGINA * this.getNumeroDePaginas();
+    }
+
+    @Override
+    public Dimensoes getDimensoes() {
+        return null;
     }
 }

@@ -1,2 +1,6 @@
-package Veiculo;public class Caminhao {
+package Veiculo;
+
+public class Caminhao extends Veiculo {
+
+
 }

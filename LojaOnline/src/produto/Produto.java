@@ -1,11 +1,12 @@
 package produto;
 
 import controle.Dimensoes;
+import controle.Transportavel;
 import controle.Vendavel;
 
 import java.awt.*;
 
-public abstract class Vendavel implements controle.Vendavel {
+public abstract class Produto implements Vendavel, Transportavel {
 
     private final long codigo; //ID único
     private String descricao;
@@ -14,7 +15,7 @@ public abstract class Vendavel implements controle.Vendavel {
     private int pesoEmGramas;
     private Dimensoes dimensoes;
 
-    public Vendavel(long codigo, String descricao){
+    public Produto(long codigo, String descricao){
 
         this.codigo = codigo;
         this.descricao = descricao;

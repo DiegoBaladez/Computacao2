@@ -1,8 +1,8 @@
 package produto;
 
-import java.awt.*;
+import controle.Dimensoes;
 
-public class EletroDomesticos extends Produto{
+public class EletroDomesticos extends Produto {
 
     private static final float PRECO_DEFAULT = 1.99f;
 
@@ -23,5 +23,10 @@ public class EletroDomesticos extends Produto{
     @Override
     protected float getPrecoDefault() {
         return PRECO_DEFAULT;
+    }
+
+    @Override
+    public Dimensoes getDimensoes() {
+        return null;
     }
 }

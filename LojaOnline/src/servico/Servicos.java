@@ -1,12 +1,22 @@
 package servico;
 
-public class Servicos {
+import controle.Pessoa;
+import controle.Vendavel;
 
+public class Servicos implements Vendavel {
+
+    private Pessoa profissionalResponsavel;
     private int duracaoEstimadaEmHoras;
-
     private float precoSugerido;
-
     private String descricao;
+    private long codigo;
+
+    public Servicos(long codigo, String descricao){
+
+        this.codigo = codigo;
+        this.descricao = descricao;
+
+    }
 
     public int getDuracaoEstimadaEmHoras() {
         return duracaoEstimadaEmHoras;
@@ -14,6 +24,11 @@ public class Servicos {
 
     public void setDuracaoEstimadaEmHoras(int duracaoEstimadaEmHoras) {
         this.duracaoEstimadaEmHoras = duracaoEstimadaEmHoras;
+    }
+
+    @Override
+    public long getCodigo() {
+        return this.codigo;
     }
 
     public float getPrecoSugerido() {

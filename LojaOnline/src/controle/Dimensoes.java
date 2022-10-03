@@ -37,4 +37,10 @@ public class Dimensoes {
     public void setAlturaEmCentimetros(int alturaEmCentimetros) {
         this.alturaEmCentimetros = alturaEmCentimetros;
     }
+
+    public int getVolumeEmCentimetrosCubicos(int larguraEmCentimetros, int alturaEmCentimetros,
+                                             int comprimentoEmCentimetros){
+        return larguraEmCentimetros*alturaEmCentimetros*comprimentoEmCentimetros;
+
+    }
 }

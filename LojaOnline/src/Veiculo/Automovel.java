@@ -1,2 +1,4 @@
-package Veiculo;public class Automovel {
+package Veiculo;
+
+public class Automovel extends Veiculo{
 }
