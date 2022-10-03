@@ -9,14 +9,15 @@ import java.util.Objects;
  *    (Dica: no construtor da classe Jogador você vai querer exatamente
  *    que sejam informados o username e a senha.)
  */
-public class Jogador {
+public class Jogador  {
+
     private String username;
     private int senha;
     private  int pontuacaoAcumulada = 1000;
-    private ArrayList<Partida> historicoDePartidas = new ArrayList<Partida>();
+    private ArrayList<Partida> historicoDePartidas;
     private boolean isJogando;
     private boolean isOnline;
-    //ToDo add construtor que desvie para outro 'overload' que nao receba senha e use uma padrão
+
 
     public Jogador(String username, int senha){
         this.username = username;
@@ -81,4 +82,12 @@ public class Jogador {
     public int hashCode() {
         return Objects.hash(username);
     }
+
+    @Override
+    public String toString() {
+        return this.username;
+    }
 }
+
+
+

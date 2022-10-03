@@ -1,6 +1,10 @@
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class JogoOnlineTest {
@@ -18,6 +22,50 @@ public class JogoOnlineTest {
 
         jogoOnline = new JogoOnline();
         jogoOnline.cadastrarJogador("Diego",senhaPadrao);
+
+    }
+    //atenção aqui, tem alago de errado.
+    @Test
+    public void testarRankingComComparator() throws JogadorCadastradoException
+    {
+        Jogador jogador08 = new Jogador("Stefany5", senhaPadrao);
+        Jogador jogador10 = new Jogador("baladez50",senhaPadrao);
+        Jogador jogador11 = new Jogador("baladez60",senhaPadrao);
+
+        jogoOnline.cadastrarJogador("Stefany5", senhaPadrao);
+        jogoOnline.cadastrarJogador("baladez50", senhaPadrao);
+        jogoOnline.cadastrarJogador("baladez60", senhaPadrao);
+
+        jogoOnline.encontrarJogador("Diego").adicionaPontuação(1);
+        jogoOnline.encontrarJogador("Stefany5").adicionaPontuação(5);
+        jogoOnline.encontrarJogador("baladez50").adicionaPontuação(50);
+        jogoOnline.encontrarJogador("baladez60").adicionaPontuação(60);
+
+        ArrayList<Jogador> listaRankingEsperado = new ArrayList<>();
+        listaRankingEsperado.add(jogador11);
+        listaRankingEsperado.add(jogador10);
+        listaRankingEsperado.add(jogador08);
+        listaRankingEsperado.add(jogador01);
+
+        assertEquals(listaRankingEsperado, jogoOnline.obterRanking());
+    }
+
+    @Test
+    public void testarOrdenamentoLexicoGraficoComComparator() throws JogadorCadastradoException {
+
+        Jogador jogador05 = new Jogador("Alberto", senhaPadrao);
+
+
+        jogoOnline.cadastrarJogador("Alberto", senhaPadrao);
+        jogoOnline.cadastrarJogador("Thayná", senhaPadrao);
+
+
+        ArrayList<Jogador> listaEmOrdemAlfabetica = new ArrayList<>();
+        listaEmOrdemAlfabetica.add(jogador05);
+        listaEmOrdemAlfabetica.add(jogador01);
+        listaEmOrdemAlfabetica.add(jogador02);
+
+        assertEquals(listaEmOrdemAlfabetica, jogoOnline.obterJogadoresEmOrdemAlfabetica());
 
     }
 
@@ -49,6 +97,17 @@ public class JogoOnlineTest {
     public void testarLoginComJogadorNaoCadastrado() throws UsuarioNaoExistenteException, SenhaInvalidaException {
         jogoOnline.login("Thayná",senhaPadrao);
 
+    }
+
+    //Outra maneira de fazer esse teste
+    @Test
+    public void testarLoginComJogadorNaoCadastradoOutroModo() throws UsuarioNaoExistenteException, SenhaInvalidaException {
+        try {
+            jogoOnline.login("Thayná", senhaPadrao);
+            fail("Uma UsarioNaoExistenteException deve ser lançada se o usuario nao estiver cadastrado");
+        }catch (UsuarioNaoExistenteException e){
+            //tratando localmente
+        }
     }
 
     @Test

@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class JogoOnline {
@@ -14,7 +15,6 @@ public class JogoOnline {
     //Melhora o Cadastro do Jogador. Aqui eu passo um objeto Jogador.
     //O método deve CRIAR o objeto e não receber um
 
-
     public Jogador cadastrarJogador(String username, int senha) throws JogadorCadastradoException {
 
         if(encontrarJogador(username) != null )
@@ -28,12 +28,12 @@ public class JogoOnline {
         return novoJogador;
     }
 
-    //se der ruim, trocar por public mas acho que é isso mesmo
+
     public Jogador encontrarJogador(String username)
     {
         return this.jogadorByUsername.get(username);
     }
-
+    //encontrar jogador e verificaSeJogadorEstaCadastrado estão fazendo a mesma coisa com retornos diferentes.
     public void login(String username, int senha) throws UsuarioNaoExistenteException, SenhaInvalidaException
     {
         if(!verificaSeJogadorEstaCadastrado(username))
@@ -50,9 +50,33 @@ public class JogoOnline {
         {
             encontrarJogador(username).setOnline();
         }
+    }
+    //ToDo criar testes!
+    public List<Jogador> obterRanking(){
+        ArrayList<Jogador> listaDeJogadores = new ArrayList();
+        listaDeJogadores.addAll(this.jogadorByUsername.values());
 
+        //outro jeito de ordenar uma lista e como ordena-la. Deve-se passar uma lista e
+//        Collections.sort(listaDeJogadores); aqui teria que implementar uma interface Comparable<Jogador>
+        ComparadorDeJogadoresPorPontuacao comparador = new ComparadorDeJogadoresPorPontuacao();
 
+        listaDeJogadores.sort(comparador); //Recebe um comparator. Um objeto que saiba comparar os objetos. Um comparable
+        //pssando a lista para uma ordem decrescente!
+        Collections.reverse(listaDeJogadores);
+        return listaDeJogadores;
+    }
 
+    public List<Jogador> obterJogadoresEmOrdemAlfabetica()
+    {
+        ArrayList<Jogador> listaLexicoGrafica = new ArrayList<>();
+        listaLexicoGrafica.addAll(this.jogadorByUsername.values());
+
+        ComparadorDeJogadoresLexicoGrafico comparadorLexicoGrafico = new ComparadorDeJogadoresLexicoGrafico();
+
+        listaLexicoGrafica.sort(comparadorLexicoGrafico);
+        Collections.reverse(listaLexicoGrafica);
+
+        return listaLexicoGrafica;
     }
 
     private boolean verificaSeJogadorEstaCadastrado(String username)
@@ -65,7 +89,7 @@ public class JogoOnline {
         if (!jogador.isOnline()){
             throw new RuntimeException("Jogador já se encontra offline");
         }
-
+    //verificar se realmente precisa fazer essa checagem...
         if(jogador != null)
         {
             jogador.setOffline();
@@ -89,7 +113,7 @@ public class JogoOnline {
             }
         }
 
-        return null; //TODO lançar uma exceção
+        return null; //TODO lançar uma exceção, mas qual
     }
 
     public Partida iniciarPartida(String username1, String username2) {
@@ -186,6 +210,54 @@ public class JogoOnline {
     }
 }
 
+
+class ComparadorDeJogadoresPorPontuacao implements Comparator<Jogador>{
+
+    @Override
+    public int compare(Jogador o1, Jogador o2) {
+        return o1.getPontuacaoAcumulada() - o2.getPontuacaoAcumulada();
+    }
+}
+
+class ComparadorDeJogadoresLexicoGrafico implements Comparator<Jogador> {
+
+
+    @Override
+    public int compare(Jogador o1, Jogador o2) {
+        return 0;
+    }
+
+    @Override
+    public Comparator<Jogador> reversed() {
+        return Comparator.super.reversed();
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * HashMap: Mapeamento entre dois objetos. Sempre que acrecentarmos alguma coisa no
  * mapa, informamos duas coisas: a chave(pode ser qualquer coisa) e o valor(qualquer
@@ -195,5 +267,12 @@ public class JogoOnline {
  * Tempo o(1).
  *Sintaxe HashMap<TipoDaChave,TipoDoValor> valorByChave;
  *
+ *
+ *
+ *
+ *
+ * Para ordernar uma List, tenho duas maneiras:
+ * 1) chamar o método da lista, no caso o .sort() e passando como parâmetros um Comparador/comparator
+ * esse comparator eu devo criar uma classe e implementar a interface Comparator<Classe>
  */
 

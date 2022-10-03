@@ -1,36 +1,30 @@
 package produto;
 
 import controle.Dimensoes;
+import controle.Vendavel;
 
 import java.awt.*;
 
-public abstract class Produto {
-
-
+public abstract class Vendavel implements controle.Vendavel {
 
     private final long codigo; //ID único
-
     private String descricao;
-
     private Image imagem;
-
     private float precoSugerido;
-
     private int pesoEmGramas;
-
     private Dimensoes dimensoes;
 
-    public Produto(long codigo, String descricao, Dimensoes dimensoes){
+    public Vendavel(long codigo, String descricao){
 
-        this.dimensoes = dimensoes;
         this.codigo = codigo;
         this.descricao = descricao;
         this.precoSugerido = getPrecoDefault();
+
     }
 
     public long getCodigo() {
         return codigo;
-    }
+    } //da classe implementada!
 
     public String getDescricao() {
         return descricao;
@@ -50,7 +44,7 @@ public abstract class Produto {
 
     public float getPrecoSugerido() {
         return precoSugerido;
-    }
+    } //da classe implementada!
 
     public void setPrecoSugerido(float precoSugerido) {
         this.precoSugerido = precoSugerido;

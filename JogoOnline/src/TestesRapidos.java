@@ -1,15 +1,26 @@
+import java.util.ArrayList;
+
 public class TestesRapidos {
     public static void main(String[] args) throws JogadorCadastradoException, UsuarioNaoExistenteException,
             SenhaInvalidaException {
 
-        Jogador diego = new Jogador("Gagdau",123);
-        JogoOnline partida1 = new JogoOnline();
+        final int senhaPadrao = 123;
+        JogoOnline jogoOnline = new JogoOnline();
 
-        partida1.cadastrarJogador("Gagdau",123);
+        Jogador jogador01 = new Jogador("A",senhaPadrao);
+        Jogador jogador02 = new Jogador("B",senhaPadrao);
+        Jogador jogador04 = new Jogador("C", senhaPadrao);
 
-        partida1.login("Gagdau",123);
+        jogoOnline.cadastrarJogador("A",senhaPadrao);
+        jogoOnline.cadastrarJogador("C",senhaPadrao);
+        jogoOnline.cadastrarJogador("B",senhaPadrao);
 
-        System.out.println(diego.isOnline());
+       jogoOnline.obterJogadoresEmOrdemAlfabetica().forEach(System.out::println);
+
+
+
+
+
 
     }
 }

@@ -1,0 +1,9 @@
+1) Crie um ComparadorDeJogadoresLexicoGrafico (ordem alfabética)
+
+2) Crie em JogoOnline um método obterJogadoresEmOrdemAlfabetica() que faça o que o nome diz,
+i.e., retorna uma lista ordenada lexicograficamente (em ordem alfabética)
+
+3) Crie um unit test para os métodos de JogoOnline obterRanking() e obterJogadoresEmOrdemAlfabetica()
+
+4) faça  o mesmo (crie testes) para o compare to para a classe Fracao, ou seja, crie testes
+para o compareTo() de Fração;
